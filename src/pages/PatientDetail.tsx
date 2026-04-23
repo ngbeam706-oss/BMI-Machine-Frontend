@@ -16,6 +16,7 @@ import muscleAnatomy from "@/assets/3d_muscular_anatomy_human_1776422761523.png"
 import fatAnatomy from "@/assets/3d_human_anatomy_with_fat_layer_1776423834660.png";
 
 import { usePatientDetail } from "@/hooks/usePatientDetail";
+import { toast } from "sonner";
 
 export default function PatientDetail() {
   const { id } = useParams();
@@ -47,6 +48,93 @@ export default function PatientDetail() {
   const latest = scans[0];
   const previous = scans[1];
   const m = latest.measurement;
+
+  const handlePrint = async () => {
+    const element = reportRef.current;
+    if (!element) return;
+
+    toast.loading("Preparing report for printing...", { id: "print-report" });
+
+    try {
+      const opt = {
+        margin: 0,
+        filename: `Mayurah_Report_${patient.name.replace(/\s+/g, '_')}.pdf`,
+        image: { type: 'jpeg' as const, quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, logging: false },
+        jsPDF: { unit: 'mm' as const, format: 'a4' as const, orientation: 'portrait' as const }
+      };
+
+      const pdfBlob = await html2pdf().from(element).set(opt).output('blob');
+      const url = URL.createObjectURL(pdfBlob);
+      
+      const iframe = document.createElement('iframe');
+      iframe.style.position = 'fixed';
+      iframe.style.right = '0';
+      iframe.style.bottom = '0';
+      iframe.style.width = '0';
+      iframe.style.height = '0';
+      iframe.style.border = '0';
+      iframe.src = url;
+      document.body.appendChild(iframe);
+
+      iframe.onload = () => {
+        iframe.contentWindow?.print();
+        toast.success("Print dialog opened", { id: "print-report" });
+        setTimeout(() => {
+          document.body.removeChild(iframe);
+          URL.revokeObjectURL(url);
+        }, 1000);
+      };
+    } catch (err) {
+      console.error("Print error:", err);
+      toast.error("Could not prepare report for printing", { id: "print-report" });
+    }
+  };
+
+  const handleShare = async () => {
+    const element = reportRef.current;
+    if (!element) return;
+
+    toast.loading("Preparing document for sharing...", { id: "share-report" });
+
+    try {
+      const opt = {
+        margin: 0,
+        filename: `Mayurah_Report_${patient.name.replace(/\s+/g, '_')}.pdf`,
+        image: { type: 'jpeg' as const, quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, logging: false },
+        jsPDF: { unit: 'mm' as const, format: 'a4' as const, orientation: 'portrait' as const }
+      };
+
+      const pdfBlob = await html2pdf().from(element).set(opt).output('blob');
+      const file = new File([pdfBlob], opt.filename, { type: 'application/pdf' });
+
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          files: [file],
+          title: `Health Report - ${patient.name}`,
+          text: `Body composition and health insights for ${patient.name}`
+        });
+        toast.success("Report shared successfully", { id: "share-report" });
+      } else {
+        // Fallback for desktop or non-sharing browsers
+        const url = URL.createObjectURL(pdfBlob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = opt.filename;
+        link.click();
+        URL.revokeObjectURL(url);
+        toast.success("PDF generated and downloaded (Share API not supported on this browser)", { id: "share-report" });
+      }
+    } catch (err) {
+      if ((err as Error).name !== "AbortError") {
+        console.error("Share error:", err);
+        toast.error("Could not share report", { id: "share-report" });
+      } else {
+        toast.dismiss("share-report");
+      }
+    }
+  };
 
   // Check if we have advanced data (non-zero muscle mass)
   const hasAdvancedData = m.muscleMass > 0;
@@ -174,8 +262,12 @@ export default function PatientDetail() {
               <p className="text-sm text-muted-foreground">{patient.id} · {patient.gender} · {patient.age} years · {patient.height} cm</p>
             </div>
             <div className="flex flex-wrap gap-2">
-              <Button variant="outline" size="sm"><Share2 className="h-4 w-4 mr-2" />Share</Button>
-              <Button variant="outline" size="sm"><Printer className="h-4 w-4 mr-2" />Print</Button>
+              <Button variant="outline" size="sm" onClick={handleShare}>
+                <Share2 className="h-4 w-4 mr-2" /> Share
+              </Button>
+              <Button variant="outline" size="sm" onClick={handlePrint}>
+                <Printer className="h-4 w-4 mr-2" /> Print
+              </Button>
               <Button 
                 size="sm" 
                 className="bg-gradient-primary text-primary-foreground hover:opacity-90 min-w-[140px]"

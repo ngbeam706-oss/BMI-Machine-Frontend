@@ -192,13 +192,15 @@ export default function Devices() {
             </tbody>
           </table>
         </div>
-        <DataTablePagination 
-          currentPage={currentPage} 
-          totalPages={totalPages} 
-          onPageChange={setCurrentPage} 
-          totalItems={totalItems} 
-          pageSize={pageSize} 
-        />
+        {totalItems > pageSize && (
+          <DataTablePagination 
+            currentPage={currentPage} 
+            totalPages={totalPages} 
+            onPageChange={setCurrentPage} 
+            totalItems={totalItems} 
+            pageSize={pageSize} 
+          />
+        )}
       </div>
 
       <Sheet open={formOpen} onOpenChange={setFormOpen}>

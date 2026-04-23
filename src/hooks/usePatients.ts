@@ -191,7 +191,7 @@ export const usePatients = (filters: PatientFilters = {}) => {
       });
       return {
         data: mappedData,
-        count: response.count ?? (response.pagination ? 100 : mappedData.length),
+        count: response.count ?? mappedData.length,
         pagination: response.pagination
       };
     },

@@ -144,3 +144,43 @@
 ::-webkit-scrollbar-track { background: hsl(var(--muted)); }
 ::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 8px; }
 ::-webkit-scrollbar-thumb:hover { background: hsl(var(--muted-foreground) / 0.4); }
+
+/* Print Styles */
+@media print {
+  /* Hide everything by default */
+  body * {
+    visibility: hidden;
+  }
+  
+  /* Show only the report and its children */
+  #report-pdf-content, 
+  #report-pdf-content * {
+    visibility: visible;
+  }
+  
+  /* Reset positioning for the report during print */
+  #report-pdf-content {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 210mm !important; /* A4 width */
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    background: white !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  /* Hide common UI wrappers that might still take space */
+  .fixed, .absolute, .sidebar, nav, header, button {
+    display: none !important;
+  }
+
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+}

@@ -264,13 +264,15 @@ export default function Patients() {
               </tbody>
             </table>
           </div>
-          <DataTablePagination 
-            currentPage={currentPage} 
-            totalPages={totalPages} 
-            onPageChange={setCurrentPage} 
-            totalItems={totalItems} 
-            pageSize={pageSize} 
-          />
+          {totalItems > pageSize && (
+            <DataTablePagination 
+              currentPage={currentPage} 
+              totalPages={totalPages} 
+              onPageChange={setCurrentPage} 
+              totalItems={totalItems} 
+              pageSize={pageSize} 
+            />
+          )}
         </div>
       ) : (
         <>
@@ -311,13 +313,15 @@ export default function Patients() {
               </Link>
             ))}
           </div>
-          <DataTablePagination 
-            currentPage={currentPage} 
-            totalPages={totalPages} 
-            onPageChange={setCurrentPage} 
-            totalItems={totalItems} 
-            pageSize={pageSize} 
-          />
+          {totalItems > pageSize && (
+            <DataTablePagination 
+              currentPage={currentPage} 
+              totalPages={totalPages} 
+              onPageChange={setCurrentPage} 
+              totalItems={totalItems} 
+              pageSize={pageSize} 
+            />
+          )}
         </>
       )}
     </>
