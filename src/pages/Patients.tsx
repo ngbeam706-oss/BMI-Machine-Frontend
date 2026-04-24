@@ -6,7 +6,7 @@ import { StatusBadge } from "@/components/StatusBadges";
 import { Link } from "react-router-dom";
 import { useMemo, useState } from "react";
 import { Search, Download, LayoutGrid, List, ArrowUpDown, Filter, Eye, Calendar as CalendarIcon } from "lucide-react";
-import { format } from "date-fns";
+import { format, subDays } from "date-fns";
 import { cn } from "@/lib/utils";
 import { usePagination } from "@/hooks/usePagination";
 import { DataTablePagination } from "@/components/DataTablePagination";
@@ -24,9 +24,9 @@ export default function Patients() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [ageFilter, setAgeFilter] = useState("all");
   const [sort, setSort] = useState<Sort>("latest");
-  
-  const [startDate, setStartDate] = useState(() => format(new Date(), "yyyy-MM-dd"));
-  const [endDate, setEndDate] = useState("");
+
+  const [endDate, setEndDate] = useState(() => format(new Date(), "yyyy-MM-dd"));
+  const [startDate, setStartDate] = useState(() => format(subDays(new Date(), 7), "yyyy-MM-dd"));
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 10;
 
@@ -76,14 +76,14 @@ export default function Patients() {
   // Remaining local filters (gender, status, age, sort)
   const filtered = useMemo(() => {
     let list = [...dynamicPatients];
-    
+
     // Apply local search if backend search wasn't triggered
     if (search && search.length <= 3) {
       const q = search.toLowerCase();
-      list = list.filter(({ p, branch }) => 
-        p.name.toLowerCase().includes(q) || 
-        p.id.toLowerCase().includes(q) || 
-        p.phone.includes(q) || 
+      list = list.filter(({ p, branch }) =>
+        p.name.toLowerCase().includes(q) ||
+        p.id.toLowerCase().includes(q) ||
+        p.phone.includes(q) ||
         branch.name.toLowerCase().includes(q)
       );
     }
@@ -118,9 +118,9 @@ export default function Patients() {
         <div className="flex items-center gap-4 mr-4 bg-card border border-border px-4 py-2 rounded-xl shadow-sm">
           <div className="flex items-center gap-2">
             <span className="text-[10px] font-black text-muted-foreground uppercase">From</span>
-            <input 
-              type="date" 
-              value={startDate} 
+            <input
+              type="date"
+              value={startDate}
               onChange={(e) => { setStartDate(e.target.value); setCurrentPage(1); }}
               className="bg-transparent border-none text-xs font-bold focus:ring-0 cursor-pointer p-0"
             />
@@ -128,9 +128,9 @@ export default function Patients() {
           <div className="h-4 w-px bg-border" />
           <div className="flex items-center gap-2">
             <span className="text-[10px] font-black text-muted-foreground uppercase">To</span>
-            <input 
-              type="date" 
-              value={endDate} 
+            <input
+              type="date"
+              value={endDate}
               onChange={(e) => { setEndDate(e.target.value); setCurrentPage(1); }}
               className="bg-transparent border-none text-xs font-bold focus:ring-0 cursor-pointer p-0"
             />
@@ -265,12 +265,12 @@ export default function Patients() {
             </table>
           </div>
           {totalItems > pageSize && (
-            <DataTablePagination 
-              currentPage={currentPage} 
-              totalPages={totalPages} 
-              onPageChange={setCurrentPage} 
-              totalItems={totalItems} 
-              pageSize={pageSize} 
+            <DataTablePagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+              totalItems={totalItems}
+              pageSize={pageSize}
             />
           )}
         </div>
@@ -314,12 +314,12 @@ export default function Patients() {
             ))}
           </div>
           {totalItems > pageSize && (
-            <DataTablePagination 
-              currentPage={currentPage} 
-              totalPages={totalPages} 
-              onPageChange={setCurrentPage} 
-              totalItems={totalItems} 
-              pageSize={pageSize} 
+            <DataTablePagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+              totalItems={totalItems}
+              pageSize={pageSize}
             />
           )}
         </>
