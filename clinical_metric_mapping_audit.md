@@ -10,7 +10,7 @@ This document provides a comprehensive cross-reference between the **Backend JSO
 | Age | `age` | Patient Card | ✅ Mapped |
 | Height | `height` | Patient Card | ✅ Mapped |
 | Scan Timestamp | `created_at` | Patient Card | ✅ Mapped |
-| UHID | `patient_uhid` | Patient Card (Implicit) | ✅ Mapped |
+| UHID | `patient_uhid` | Patient Card | ❌ Not in PDF |
 
 ## 2. Core Body Composition (Page 1 - Top Left)
 | Metric | Lefu Key | PDF Section | Status |
@@ -94,11 +94,29 @@ This document provides a comprehensive cross-reference between the **Backend JSO
 | Left Leg Fat Ratio | `ppBodyFatRateLeftLeg`| Segmental fat analysis | ✅ Mapped |
 | Right Leg Fat Ratio | `ppBodyFatRateRightLeg`| Segmental fat analysis | ✅ Mapped |
 
-## 9. Technical Metrics (Impedance)
+## 9. Body Type Analysis (Page 1 - Middle Right)
 | Metric | Backend Key | PDF Section | Status |
 | :--- | :--- | :--- | :--- |
-| 20KHz Impedance (L/R/T)| `z20khz_...` | Segmental Impedance (Table) | ✅ Mapped |
-| 100KHz Impedance (L/R/T)| `z100khz_...` | Segmental Impedance (Table) | ✅ Mapped |
+| Body Type | `m.bodyType` | Body type analysis (Grid) | ✅ Mapped |
+
+## 10. Body Composition History (Page 1 - Bottom Right)
+| Metric | Backend Key | PDF Section | Status |
+| :--- | :--- | :--- | :--- |
+| Weight Trend | `scans[].weight` | Body composition history | ✅ Mapped |
+| Muscle Trend | `scans[].muscleMass`| Body composition history | ✅ Mapped |
+| Fat Ratio Trend | `scans[].fatRatio` | Body composition history | ✅ Mapped |
+
+## 11. Technical Metrics (Impedance)
+| Metric | Backend Key | PDF Section | Status |
+| :--- | :--- | :--- | :--- |
+| 20KHz Impedance (L/R/T)| `z20khz_...` | N/A | ❌ Screen Only |
+| 100KHz Impedance (L/R/T)| `z100khz_...` | N/A | ❌ Screen Only |
+
+## 12. Miscellaneous
+| Metric | Backend Key | PDF Section | Status |
+| :--- | :--- | :--- | :--- |
+| Medical Disclaimer | N/A (Static) | Footer | ✅ Mapped |
+| Device ID / CF ID | N/A (Static) | Footer | ✅ Mapped |
 
 ---
 **Summary of Audit:**

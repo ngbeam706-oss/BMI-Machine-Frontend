@@ -20,8 +20,8 @@ export const PatientReportPDF = React.forwardRef<HTMLDivElement, PatientReportPD
     const m = latestScan.measurement;
 
     const SectionHeader = ({ title }: { title: string }) => (
-      <div className="bg-[#b3b8bd] text-white rounded-md shadow-inner h-[18px] flex flex-col justify-center items-center mb-1 mt-1 first:mt-0 overflow-hidden">
-        <span className="text-[8px] font-bold uppercase tracking-widest leading-none block -translate-y-[1px]">
+      <div className="bg-[#b3b8bd] text-white rounded shadow-inner h-[18px] flex flex-col justify-center items-center mb-1 mt-1 first:mt-0 overflow-hidden">
+        <span className="text-[8px] font-bold uppercase tracking-widest leading-none block">
           {title}
         </span>
       </div>
@@ -55,7 +55,7 @@ export const PatientReportPDF = React.forwardRef<HTMLDivElement, PatientReportPD
 
       return (
         <div className={cn("flex items-center justify-between text-[8px] border-b border-gray-50 pb-1", isLast && "border-0 pb-0")}>
-          <span className="text-gray-500 w-[80px] leading-tight" dangerouslySetInnerHTML={{ __html: label }} />
+          <span className="text-slate-600 w-[80px] leading-tight" dangerouslySetInnerHTML={{ __html: label }} />
           <div className="flex-1 px-2 relative -top-1">
             <div className="flex justify-between text-[6px] font-bold text-gray-400 mb-0.5">
               <span className="ml-4">{labels[0]}</span>
@@ -86,11 +86,11 @@ export const PatientReportPDF = React.forwardRef<HTMLDivElement, PatientReportPD
       const colors = colorMap[color] || colorMap.blue;
 
       return (
-        <div className="flex items-center w-full py-1.5 border-b border-gray-50 last:border-0">
+        <div className="flex items-center w-full py-1 border-b border-gray-50 last:border-0">
           <div className="w-16 shrink-0">
             <div className="text-[6px] font-black text-slate-500 uppercase tracking-tighter leading-none">{label}</div>
           </div>
-          <div className="flex-1 flex justify-between items-center px-2 relative h-6">
+          <div className="flex-1 flex justify-between items-center px-2 relative h-4">
             {/* Connecting line */}
             <div className={cn("absolute left-4 right-4 h-[0.5px] top-1/2 -translate-y-1/2 opacity-30", colors.line)} />
 
@@ -116,7 +116,7 @@ export const PatientReportPDF = React.forwardRef<HTMLDivElement, PatientReportPD
       <div
         ref={ref}
         id="report-pdf-content"
-        className="bg-[#f0f2f5] mx-auto font-sans text-slate-800 pt-[20px] px-[30px] pb-[50px] overflow-hidden flex flex-col w-[800px] h-[1120px] relative"
+        className="bg-[#f0f2f5] mx-auto font-sans text-slate-800 pt-[20px] px-[30px] pb-[20px] overflow-hidden flex flex-col w-[800px] h-[1132px] relative"
         style={{ boxSizing: "border-box" }}
       >
         {/* Header */}
@@ -134,22 +134,22 @@ export const PatientReportPDF = React.forwardRef<HTMLDivElement, PatientReportPD
               <img alt="Profile" className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDbTl8kJmS_rokgGTCvDD8kB6ghSHvBGTNjP6nBgPZk8tDHYTTPjGGaD-4xHoxr2-9-ZFv-8HBmocOxk9iAWuHIdqheyN_wnate9VbFAvyGKMgl0Nd0uJkywSvJZL8FdKHVcwkZWZ6WghkfbFaQcQ4iKOVkd027mZnhx2hwovGc1pqA-secbtppeZMLZHrYxFbSkVujsLrzEmsyPzKnMmaiXPF16VEw436hUU72TFKlkJDwldY7N1sMKGQeQBZDUqK4SClBLjBJ1po" />
             </div>
             <div>
-              <div className="font-bold text-[13px] leading-tight flex items-center gap-1">
+              <div className="font-bold text-[13px] leading-tight flex items-center gap-1 text-slate-800">
                 {patient.name} <span className="text-blue-500 text-[10px]">♂</span>
               </div>
-              <div className="text-[8px] text-gray-500 font-medium">Scan Date & Time:{format(new Date(latestScan.timestamp), "dd-MM-yyyy HH:mm")}</div>
+              <div className="text-[8px] text-slate-600 font-bold">Scan Date & Time:{format(new Date(latestScan.timestamp), "dd-MM-yyyy HH:mm")}</div>
             </div>
           </div>
           <div className="border-l border-gray-100 pl-2">
-            <div className="text-[8px] font-bold text-center text-gray-400 uppercase">Age</div>
-            <div className="text-[11px] font-bold">{patient.age}Age</div>
+            <div className="text-[8px] font-bold text-center text-slate-500 uppercase">Age</div>
+            <div className="text-[11px] font-bold text-slate-800">{patient.age}Age</div>
           </div>
           <div className="border-l border-gray-100 pl-2">
-            <div className="text-[8px] font-bold text-center text-gray-400 uppercase">Height</div>
-            <div className="text-[11px] font-bold">{patient.height}cm</div>
+            <div className="text-[8px] font-bold text-center text-slate-500 uppercase">Height</div>
+            <div className="text-[11px] font-bold text-slate-800">{patient.height}cm</div>
           </div>
           <div className="border-l border-gray-100 pl-2 text-right">
-            <div className="text-[8px] font-bold uppercase text-gray-400 text-center">Health Score</div>
+            <div className="text-[8px] font-bold uppercase text-slate-500 text-center">Health Score</div>
             <div className="text-base font-black text-blue-600 tracking-tighter leading-none pb-1">
               {m.healthScore} <span className="text-[8px] font-bold text-blue-400/80 uppercase">
                 {m.dynamicStandards?.ppBodyScore?.standardTitle || m.healthEvaluation || "SUB-HEALTH"}
@@ -176,22 +176,22 @@ export const PatientReportPDF = React.forwardRef<HTMLDivElement, PatientReportPD
                     <div className="flex items-center gap-1 w-[45%]">
                       <div className={cn("w-1.5 h-1.5 rounded-full", item.c)} />
 
-                      <span className="text-gray-500 leading-[1.2]">
+                      <span className="text-slate-600 font-bold leading-[1.2]">
                         {item.l}
                       </span>
                     </div>
 
-                    <div className="w-[15%] text-center font-bold">
+                    <div className="w-[15%] text-center font-bold text-slate-800">
                       {item.v}
                     </div>
 
-                    <div className="w-[40%] text-right text-gray-400 leading-[1.2]">
+                    <div className="w-[40%] text-right text-slate-500 font-bold leading-[1.2]">
                       {item.r}
                     </div>
                   </div>
                 ))}
 
-                <div className="text-[6px] text-gray-400 font-bold uppercase mt-0.5 leading-tight">
+                <div className="text-[6.5px] text-slate-600 font-bold mt-0.5 px-1">
                   Weight:{m.dynamicStandards?.ppWeightKg?.standardTitle || "Standard"};Total Body Water:{m.dynamicStandards?.ppWaterKg?.standardTitle || "Standard"};Fat Mass:{m.dynamicStandards?.ppBodyfatKg?.standardTitle || "Standard"};Protein Mass:{m.dynamicStandards?.ppProteinKg?.standardTitle || "Standard"};Minerals:{m.dynamicStandards?.ppMineralKg?.standardTitle || "Standard"}
                 </div>
               </div>
@@ -211,9 +211,9 @@ export const PatientReportPDF = React.forwardRef<HTMLDivElement, PatientReportPD
                 </svg>
                 <div className="absolute flex flex-col items-center justify-center text-center">
                   <span className="text-[7px] text-slate-500 font-bold uppercase">Weight</span>
-                  <span className="text-[12px] font-black leading-none">{m.weight}kg</span>
-                  <span className="text-[7px] text-gray-400 font-bold mt-0.5">(52~71)</span>
-                  <span className="text-[7px] text-gray-400 font-bold uppercase">Overweight</span>
+                  <span className="text-[12px] font-bold text-slate-800 leading-none">{m.weight}kg</span>
+                  <span className="text-[7px] text-slate-500 font-bold mt-0.5">(52~71)</span>
+                  <span className="text-[7px] text-slate-500 font-bold uppercase">Overweight</span>
                 </div>
               </div>
             </div>
@@ -232,9 +232,7 @@ export const PatientReportPDF = React.forwardRef<HTMLDivElement, PatientReportPD
                 const std = m.dynamicStandards?.[item.k];
                 const val = std?.currentValue ?? item.v;
                 const standards = std?.standardArray?.length > 0 ? std.standardArray : item.s;
-                // Exclude heart rate from JSON colors as requested
                 const colors = (item.k !== "heartRate" && std?.colorArray?.length > 0) ? std.colorArray : item.c;
-
                 const numSegments = colors.length;
 
                 let pos;
@@ -273,9 +271,9 @@ export const PatientReportPDF = React.forwardRef<HTMLDivElement, PatientReportPD
 
                 return (
                   <div key={item.l} className="bg-white px-2 py-1 rounded shadow-sm border border-gray-100 flex items-center gap-2">
-                    <span className="text-[7px] text-gray-500 font-bold w-[75px] leading-tight flex-shrink-0">{item.l}</span>
+                    <span className="text-[7px] text-slate-600 font-bold w-[75px] leading-tight flex-shrink-0">{item.l}</span>
                     <div className="flex-1 px-4 relative pt-[10px] pb-0.5">
-                      <div className="absolute top-[-5px] left-4 right-4 h-0 text-[6px] font-bold text-gray-400">
+                      <div className="absolute top-[-5px] left-4 right-4 h-0 text-[6px] font-bold text-slate-500">
                         {standards.map((s, idx) => (
                           <span
                             key={idx}
@@ -300,11 +298,11 @@ export const PatientReportPDF = React.forwardRef<HTMLDivElement, PatientReportPD
                         />
                       </div>
                     </div>
-                    <span className="text-[9px] font-black text-slate-800 w-[25px] text-right flex-shrink-0">{val}</span>
+                    <span className="text-[9px] font-bold text-slate-800 w-[25px] text-right flex-shrink-0">{val}</span>
                   </div>
                 );
               })}
-              <div className="text-[6.5px] leading-tight text-gray-500 font-medium pt-0.5 px-1">
+              <div className="text-[6.5px] text-slate-600 font-bold mt-0.5 px-1">
                 BMI:{m.dynamicStandards?.ppBMI?.standardTitle || "Standard"};
                 Heart Rate:Normal;
                 BMR:{m.dynamicStandards?.ppBMR?.standardTitle || "Standard"};
@@ -365,9 +363,9 @@ export const PatientReportPDF = React.forwardRef<HTMLDivElement, PatientReportPD
 
               return (
                 <div key={item.l} className="bg-white px-2 py-1 rounded shadow-sm border border-gray-100 flex items-center gap-2">
-                  <span className="text-[7px] text-gray-500 font-bold w-[75px] leading-tight flex-shrink-0">{item.l}</span>
+                  <span className="text-[7px] text-slate-600 font-bold w-[75px] leading-tight flex-shrink-0">{item.l}</span>
                   <div className="flex-1 px-4 relative pt-[10px] pb-0.5">
-                    <div className="absolute top-[-5px] left-4 right-4 h-0 text-[6px] font-bold text-gray-400">
+                    <div className="absolute top-[-5px] left-4 right-4 h-0 text-[6px] font-bold text-slate-500">
                       {standards.map((s, idx) => (
                         <span
                           key={idx}
@@ -392,11 +390,11 @@ export const PatientReportPDF = React.forwardRef<HTMLDivElement, PatientReportPD
                       />
                     </div>
                   </div>
-                  <span className="text-[9px] font-black text-slate-800 w-[25px] text-right flex-shrink-0">{val}</span>
+                  <span className="text-[9px] font-bold text-slate-800 w-[25px] text-right flex-shrink-0">{val}</span>
                 </div>
               );
             })}
-              <div className="text-[6.5px] leading-tight text-gray-500 font-medium px-1">
+              <div className="text-[6.5px] text-slate-600 font-bold mt-0.5 px-1 -mb-2">
                 Muscle Mass:{m.dynamicStandards?.ppMuscleKg?.standardTitle || "Standard"};
                 Skeletal Muscle Mass:{m.dynamicStandards?.ppBodySkeletalKg?.standardTitle || "Standard"};
                 Skeletal Muscle Ratio:{m.dynamicStandards?.ppBodySkeletal?.standardTitle || "Standard"};
@@ -456,9 +454,9 @@ export const PatientReportPDF = React.forwardRef<HTMLDivElement, PatientReportPD
 
                 return (
                   <div key={item.l} className="bg-white px-2 py-1 rounded shadow-sm border border-gray-100 flex items-center gap-2">
-                    <span className="text-[7px] text-gray-500 font-bold w-[75px] leading-tight flex-shrink-0">{item.l}</span>
+                    <span className="text-[7px] text-slate-600 font-bold w-[75px] leading-tight flex-shrink-0">{item.l}</span>
                     <div className="flex-1 px-4 relative pt-[10px] pb-0.5">
-                      <div className="absolute top-[-5px]  left-4 right-4 h-0 text-[6px] font-bold text-gray-400">
+                      <div className="absolute top-[-5px]  left-4 right-4 h-0 text-[6px] font-bold text-slate-500">
                         {standards.map((s, idx) => (
                           <span
                             key={idx}
@@ -483,11 +481,11 @@ export const PatientReportPDF = React.forwardRef<HTMLDivElement, PatientReportPD
                         />
                       </div>
                     </div>
-                    <span className="text-[9px] font-black text-slate-800 w-[25px] text-right flex-shrink-0">{val}</span>
+                    <span className="text-[9px] font-bold text-slate-800 w-[25px] text-right flex-shrink-0">{val}</span>
                   </div>
                 );
               })}
-              <div className="text-[6.5px] leading-tight text-gray-500 font-medium px-1">
+              <div className="text-[6.5px] text-slate-600 font-bold mt-0.5 px-1">
                 Fat Ratio:{m.dynamicStandards?.ppFat?.standardTitle || "Standard"};
                 Subcutaneous Fat:{m.dynamicStandards?.ppBodyFatSubCutKg?.standardTitle || "Standard"};
                 Visceral Fat:{m.dynamicStandards?.ppVisceralFat?.standardTitle || "Standard"}
@@ -502,12 +500,12 @@ export const PatientReportPDF = React.forwardRef<HTMLDivElement, PatientReportPD
                   <div className="bg-white px-2 py-1.5 rounded shadow-sm border border-gray-100 flex items-center justify-between text-[8px]">
                     <div className="flex items-center gap-1.5">
                       <div className="w-2 h-2 rounded-full bg-blue-400" />
-                      <span className="text-gray-500 w-[55px] leading-tight">
+                      <span className="text-slate-600 font-bold leading-tight">
                         Extracellular Water(kg)
                       </span>
                     </div>
-                    <span className="font-bold text-[9px]">{m.extracellularWater}kg</span>
-                    <span className="text-gray-400 text-[7px] w-[65px] text-right">
+                    <span className="font-bold text-[9px] text-slate-800">{m.extracellularWater}kg</span>
+                    <span className="text-slate-500 font-bold text-[7px] w-[65px] text-right">
                       Standard(13.1~16.0)
                     </span>
                   </div>
@@ -516,12 +514,12 @@ export const PatientReportPDF = React.forwardRef<HTMLDivElement, PatientReportPD
                   <div className="bg-white px-2 py-1 rounded shadow-sm border border-gray-100 flex items-center justify-between text-[8px]">
                     <div className="flex items-center gap-1.5">
                       <div className="w-2 h-2 rounded-full bg-green-400" />
-                      <span className="text-gray-500 w-[55px] leading-tight">
+                      <span className="text-slate-600 font-bold leading-tight">
                         Intracellular Water(kg)
                       </span>
                     </div>
-                    <span className="font-bold text-[9px]">{m.intracellularWater}kg</span>
-                    <span className="text-gray-400 text-[7px] w-[65px] text-right">
+                    <span className="font-bold text-[9px] text-slate-800">{m.intracellularWater}kg</span>
+                    <span className="text-slate-500 font-bold text-[7px] w-[65px] text-right">
                       Standard(
                       {m.dynamicStandards?.ppWaterICWKg?.standardArray?.[0] || "21.4"}~
                       {m.dynamicStandards?.ppWaterICWKg?.standardArray?.[1] || "26.2"})
@@ -532,12 +530,12 @@ export const PatientReportPDF = React.forwardRef<HTMLDivElement, PatientReportPD
                   <div className="bg-white px-2 py-1 rounded shadow-sm border border-gray-100 flex items-center justify-between text-[8px]">
                     <div className="flex items-center gap-1.5">
                       <div className="w-2 h-2 rounded-full bg-purple-400" />
-                      <span className="text-gray-500 w-[55px] leading-tight">
+                      <span className="text-slate-600 font-bold leading-tight">
                         Body Cell Mass(kg)
                       </span>
                     </div>
-                    <span className="font-bold text-[9px]">{m.bodyCellMass}kg</span>
-                    <span className="text-gray-400 text-[7px] w-[65px] text-right">
+                    <span className="font-bold text-[9px] text-slate-800">{m.bodyCellMass}kg</span>
+                    <span className="text-slate-500 font-bold text-[7px] w-[65px] text-right">
                       Standard(
                       {m.dynamicStandards?.ppCellMassKg?.standardArray?.[0] || "30.7"}~
                       {m.dynamicStandards?.ppCellMassKg?.standardArray?.[1] || "37.5"})
@@ -575,10 +573,10 @@ export const PatientReportPDF = React.forwardRef<HTMLDivElement, PatientReportPD
                     <span className="text-[6px] text-slate-500 font-bold uppercase">
                       Total Body Water
                     </span>
-                    <span className="text-[10px] font-black leading-none">
+                    <span className="text-[10px] font-bold text-slate-800 leading-none">
                       {m.totalBodyWater}kg
                     </span>
-                    <span className="text-[7px] text-gray-400 font-bold mt-0.5">
+                    <span className="text-[7px] text-slate-500 font-bold mt-0.5">
                       (35~42)
                     </span>
                   </div>
@@ -586,7 +584,7 @@ export const PatientReportPDF = React.forwardRef<HTMLDivElement, PatientReportPD
               </div>
 
               {/* Full-width summary text */}
-              <div className="w-full text-[6px] text-gray-400 font-bold uppercase leading-[1.2]">
+              <div className="text-[6.5px] text-slate-600 font-bold mt-0.5 px-1">
                 Total Body Water:{m.dynamicStandards?.ppWaterKg?.standardTitle || "Standard"};
                 Extracellular Water:{m.dynamicStandards?.ppWaterECWKg?.standardTitle || "Standard"};
                 Intracellular Water:{m.dynamicStandards?.ppWaterICWKg?.standardTitle || "Standard"};
@@ -599,86 +597,128 @@ export const PatientReportPDF = React.forwardRef<HTMLDivElement, PatientReportPD
           {/* Right Column (55%) */}
           <div className="w-[55%] flex flex-col gap-1">
             <SectionHeader title="Health advice" />
-            <div className="bg-white p-1.5 rounded-lg  pb-1 shadow-sm border border-gray-100 grid grid-cols-2 gap-x-3 gap-y-1 text-[8px]">
-              {[
-                { l: "Standard Weight", v: `${m.standardWeight}kg` },
-                { l: "Weight Control", v: `${m.weightControl}kg` },
-                { l: "Fat Control", v: `${m.fatControl}kg` },
-                { l: "Muscle Control", v: `${m.muscleControl}kg` },
-                { l: "Health Evaluation", v: m.healthEvaluation || "Sub-health" },
-                { l: "Body Age", v: m.bodyAge || 35 },
-                { l: "Recommended Calorie Intake", v: `${m.recommendedCalories}kcal` },
-                { l: "Obesity Degree", v: m.obesityLevel || "Standard" },
-                // { l: "Obesity Degree", v: `${m.obesityLevelNum}%` },
-              ].map((item, idx) => (
-                <div
-                  key={item.l}
-                  className={cn(
-                    "flex justify-between border-b border-gray-50 pb-1",
-                    idx >= 6 && "border-b-0 pb-1"
-                  )}
-                >
-                  <span className="text-gray-500">{item.l}</span>
-                  <span className="font-bold text-right">{item.v}</span>
+            <div className=" p-0.5 rounded flex flex-col gap-1.5">
+              <div className="grid grid-cols-2 gap-x-1.5 gap-y-0.5">
+                <div className="bg-white rounded h-5 px-2 flex items-center justify-between shadow-sm">
+                  <span className="text-[7px] text-slate-600 font-medium">Standard Weight</span>
+                  <span className="text-[7.5px] text-slate-800 font-bold">{m.standardWeight}kg</span>
                 </div>
-              ))}
+                <div className="bg-white rounded h-5 px-2 flex items-center justify-between shadow-sm">
+                  <span className="text-[7px] text-slate-600 font-medium">Weight Control</span>
+                  <span className="text-[7.5px] text-slate-800 font-bold">{m.weightControl}kg</span>
+                </div>
+                <div className="bg-white rounded h-5 px-2 flex items-center justify-between shadow-sm">
+                  <span className="text-[7px] text-slate-600 font-medium">Fat Control</span>
+                  <span className="text-[7.5px] text-slate-800 font-bold">{m.fatControl}kg</span>
+                </div>
+                <div className="bg-white rounded h-5 px-2 flex items-center justify-between shadow-sm">
+                  <span className="text-[7px] text-slate-600 font-medium">Muscle Control</span>
+                  <span className="text-[7.5px] text-slate-800 font-bold">{m.muscleControl}kg</span>
+                </div>
+                <div className="bg-white rounded h-5 px-2 flex items-center justify-between shadow-sm">
+                  <span className="text-[7px] text-slate-600 font-medium">Health Evaluation</span>
+                  <span className="text-[7.5px] text-slate-800 font-bold">{m.healthEvaluation || "Sub-health"}</span>
+                </div>
+                <div className="bg-white rounded h-5 px-2 flex items-center justify-between shadow-sm">
+                  <span className="text-[7px] text-slate-600 font-medium">Body Age</span>
+                  <span className="text-[7.5px] text-slate-800 font-bold">{m.bodyAge}</span>
+                </div>
+                <div className="bg-white rounded h-5 px-2 flex items-center justify-between shadow-sm">
+                  <span className="text-[7px] text-slate-600 font-medium">Recommended Calorie Intake</span>
+                  <span className="text-[7.5px] text-slate-800 font-bold">{m.recommendedCalories}kcal</span>
+                </div>
+                <div className="bg-white rounded h-5 px-2 flex items-center justify-between shadow-sm">
+                  <span className="text-[7px] text-slate-600 font-medium">Ideal Weight</span>
+                  <span className="text-[7.5px] text-slate-800 font-bold">{m.standardWeight}kg</span>
+                </div>
+                {/* <div className="bg-white rounded h-5 px-2 flex items-center justify-between shadow-sm">
+                  <span className="text-[7px] text-slate-600 font-medium">Obesity Degree</span>
+                  <span className="text-[7.5px] text-slate-800 font-bold">{m.obesityDegree || "Standard"}</span>
+                </div>
+                <div className="bg-white rounded h-5 px-2 flex items-center justify-between shadow-sm">
+                  <span className="text-[7px] text-slate-600 font-medium">Body Cell Mass</span>
+                  <span className="text-[6.5px] text-slate-800 font-bold">
+                    {m.dynamicStandards?.ppCellMassKg?.standardTitle || "Standard"}
+                    ({m.dynamicStandards?.ppCellMassKg?.standardArray?.[0]}~ {m.dynamicStandards?.ppCellMassKg?.standardArray?.[1]}) {m.bodyCellMass}kg
+                  </span>
+                </div> */}
+              </div>
+
+              {/* <div className="text-[5.5px] text-slate-600 leading-[1.3] mt-0.5 px-1 text-justify"> */}
+              <div className="text-[6.5px] text-slate-600 font-bold mt-0.5 px-1">
+                The standard weight is {m.standardWeight}kg, the control weight is {m.weightControl}kg, the fat control amount is {m.fatControl}kg,
+                the muscle control amount is {m.muscleControl}kg, the health evaluation is {m.healthEvaluation || "Standard"},
+                the body age is {m.bodyAge}, the recommended calorie intake is {m.recommendedCalories}kcal,
+                the obesity grade is {m.obesityDegree || "Standard"}, and the body cell volume is {m.bodyCellMass}kg
+              </div>
             </div>
+            {/* <div className="text-[6px] text-gray-400 font-bold uppercase mt-0.5 leading-tight px-1">
+              Health Score:{m.dynamicStandards?.ppBodyScore?.currentValue || "N/A"};Evaluation:{m.dynamicStandards?.ppBodyScore?.standardTitle || "Standard"}
+            </div> */}
 
             <SectionHeader title="Body type analysis" />
-            <div className="bg-white p-1.5 rounded shadow-sm border border-gray-100 flex flex-col gap-0.5 text-[8px]">
-              <div className="flex font-bold text-gray-500 mb-1 ml-14">
-                Fat Ratio
+            <div className=" p-0.5 rounded flex flex-col gap-0.5">
+              <div className="text-[8px] font-bold text-slate-800 ml-2">Fat Ratio</div>
+
+              <div className="grid grid-cols-4 gap-1">
+                {/* Row 1 */}
+                <div className="bg-white rounded-md h-6 flex items-center justify-center text-[8px] font-bold text-slate-700 shadow-sm">Overweight</div>
+                {[
+                  { name: "Edematous obese", key: "Edematous obese" },
+                  { name: "Overweight muscular", key: "Overweight muscular" },
+                  { name: "Muscular overweight", key: "Muscular overweight" }
+                ].map(item => (
+                  <div key={item.name} className={cn(
+                    "rounded-md h-6 flex items-center justify-center text-center text-[6px] leading-tight shadow-sm transition-colors",
+                    (m.bodyType === item.key || m.dynamicStandards?.ppBodyType?.currentValue === item.key) ? "bg-[#cccccc] font-bold text-slate-800" : "bg-white text-slate-500"
+                  )}>
+                    {item.name}
+                  </div>
+                ))}
+
+                {/* Row 2 */}
+                <div className="bg-white rounded-md h-6 flex items-center justify-center text-[8px] font-bold text-slate-700 shadow-sm">Standard</div>
+                {[
+                  { name: "Lack of exercise", key: "Lack of exercise" },
+                  { name: "Standard", key: "Standard" },
+                  { name: "Standard muscular", key: "Standard muscular" }
+                ].map(item => (
+                  <div key={item.name} className={cn(
+                    "rounded-md h-6 flex items-center justify-center text-center text-[6px] leading-tight shadow-sm transition-colors",
+                    (m.bodyType === item.key || m.dynamicStandards?.ppBodyType?.currentValue === item.key) ? "bg-[#cccccc] font-bold text-slate-800" : "bg-white text-slate-500"
+                  )}>
+                    {item.name}
+                  </div>
+                ))}
+
+                {/* Row 3 */}
+                <div className="bg-white rounded-md h-6 flex items-center justify-center text-[8px] font-bold text-slate-700 shadow-sm">Underweight</div>
+                {[
+                  { name: "Lean", key: "Lean" },
+                  { name: "Lean muscular", key: "Lean muscular" },
+                  { name: "Muscular", key: "Muscular" }
+                ].map(item => (
+                  <div key={item.name} className={cn(
+                    "rounded-md h-6 flex items-center justify-center text-center text-[6px] leading-tight shadow-sm transition-colors",
+                    (m.bodyType === item.key || m.dynamicStandards?.ppBodyType?.currentValue === item.key) ? "bg-[#cccccc] font-bold text-slate-800" : "bg-white text-slate-500"
+                  )}>
+                    {item.name}
+                  </div>
+                ))}
+
+                {/* Row 4 (Muscle labels) */}
+                <div className="h-6"></div>
+                <div className="bg-white rounded-md h-6 flex items-center justify-center text-[8px] font-bold text-slate-600 shadow-sm">Insufficient</div>
+                <div className="bg-white rounded-md h-6 flex items-center justify-center text-[8px] font-bold text-slate-600 shadow-sm">standard</div>
+                <div className="bg-white rounded-md h-6 flex items-center justify-center text-[8px] font-bold text-slate-600 shadow-sm">excellent</div>
               </div>
 
-              <div className="flex gap-1 items-stretch">
-                <div className="w-14 space-y-1">
-                  {["Overweight", "Standard", "Underweight"].map((label) => (
-                    <div
-                      key={label}
-                      className="h-6 flex items-center justify-center font-medium bg-gray-50 rounded border border-gray-100 text-[7px]"
-                    >
-                      {label}
-                    </div>
-                  ))}
-                </div>
+              <div className="text-[8px] font-bold text-slate-800 text-center mt-0.5">Muscle Mass</div>
 
-                <div className="flex-1 grid grid-cols-3 gap-1 grid-rows-3 ">
-                  {[
-                    "Edematous obese",
-                    "Overweight muscular",
-                    "Muscular overweight",
-                    "Lack of exercise",
-                    "Standard",
-                    "Standard muscular",
-                    "Lean",
-                    "Lean muscular",
-                    "Muscular",
-                  ].map((text) => (
-                    <div
-                      key={text}
-                      className={cn(
-                        "rounded border flex items-center justify-center text-center text-[7px]",
-                        text === "Overweight muscular"
-                          ? "bg-gray-200 border-gray-300 font-bold"
-                          : "bg-gray-50 border-gray-100 text-gray-500"
-                      )}
-                    >
-                      {text}
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="flex font-bold text-gray-500 mt-1 ml-14">
-                <div className="flex-1 grid grid-cols-3 text-center">
-                  <span>Insufficient</span>
-                  <span>Standard</span>
-                  <span>Excellent</span>
-                </div>
-              </div>
-
-              <div className="flex justify-center text-gray-500 font-bold mt-0.5">
-                Muscle Mass
+              <div className="text-[6.5px] text-slate-600 font-bold mt-0.5 px-1">
+                Fat Ratio:{m.dynamicStandards?.ppFat?.standardTitle || "Standard"};
+                Muscle Mass:{m.dynamicStandards?.ppMuscleKg?.standardTitle || "Standard"};
+                Body Type:{m.bodyType || m.dynamicStandards?.ppBodyType?.currentValue || "Standard"}
               </div>
             </div>
 
@@ -709,15 +749,14 @@ export const PatientReportPDF = React.forwardRef<HTMLDivElement, PatientReportPD
                   <div className="absolute bottom-[24.5%] right-16 left-[56%] h-px bg-blue-200" />
 
                   {/* Left Arm */}
-                  <div className="absolute top-[18%] left-4 text-[7px] text-gray-500 leading-tight">
+                  <div className="absolute top-[18%] left-4 text-[7px] text-slate-600 font-bold leading-tight">
                     <div className="font-bold text-slate-800 uppercase mb-0.5">Left arm</div>
                     Fat Mass {m.leftArmFatMass}kg
                     <br />
                     Fat Ratio {m.leftArmFatRatio}%
                   </div>
-
-                  {/* Right Arm */}
-                  <div className="absolute top-[18%] right-4 text-[7px] text-gray-500 leading-tight text-right">
+                   {/* Right Arm */}
+                  <div className="absolute top-[18%] right-4 text-[7px] text-slate-600 font-bold leading-tight text-right">
                     <div className="font-bold text-slate-800 uppercase mb-0.5">Right arm</div>
                     Fat Mass {m.rightArmFatMass}kg
                     <br />
@@ -725,7 +764,7 @@ export const PatientReportPDF = React.forwardRef<HTMLDivElement, PatientReportPD
                   </div>
 
                   {/* Trunk */}
-                  <div className="absolute top-[40%] left-4 text-[7px] text-gray-500 leading-tight">
+                  <div className="absolute top-[40%] left-4 text-[7px] text-slate-600 font-bold leading-tight">
                     <div className="font-bold text-slate-800 uppercase mb-0.5">Trunk</div>
                     Fat Mass {m.trunkFatMass}kg
                     <br />
@@ -733,7 +772,7 @@ export const PatientReportPDF = React.forwardRef<HTMLDivElement, PatientReportPD
                   </div>
 
                   {/* Left Leg */}
-                  <div className="absolute bottom-[22%] left-4 text-[7px] text-gray-500 leading-tight">
+                  <div className="absolute bottom-[22%] left-4 text-[7px] text-slate-600 font-bold leading-tight">
                     <div className="font-bold text-slate-800 uppercase mb-0.5">Left leg</div>
                     Fat Mass {m.leftLegFatMass}kg
                     <br />
@@ -741,12 +780,13 @@ export const PatientReportPDF = React.forwardRef<HTMLDivElement, PatientReportPD
                   </div>
 
                   {/* Right Leg */}
-                  <div className="absolute bottom-[22%] right-4 text-[7px] text-gray-500 leading-tight text-right">
+                  <div className="absolute bottom-[22%] right-4 text-[7px] text-slate-600 font-bold leading-tight text-right">
                     <div className="font-bold text-slate-800 uppercase mb-0.5">Right leg</div>
                     Fat Mass {m.rightLegFatMass}kg
                     <br />
                     Fat Ratio {m.rightLegFatRatio}%
                   </div>
+
                 </>
               )}
             </div>
@@ -777,35 +817,35 @@ export const PatientReportPDF = React.forwardRef<HTMLDivElement, PatientReportPD
                   <div className="absolute bottom-[24.5%] left-16 right-[56%] h-px bg-blue-200" />
                   <div className="absolute bottom-[24.5%] right-16 left-[56%] h-px bg-blue-200" />
 
-                  <div className="absolute top-[18%] left-4 text-[7px] text-gray-500 leading-tight">
+                  <div className="absolute top-[18%] left-4 text-[7px] text-slate-600 font-bold leading-tight">
                     <div className="font-bold text-slate-800 uppercase mb-0.5">Left arm</div>
                     Muscle Mass {m.leftArmMuscleMass}kg
                     <br />
                     Ratio {m.leftArmMuscleRate}%
                   </div>
 
-                  <div className="absolute top-[18%] right-4 text-[7px] text-gray-500 leading-tight text-right">
+                  <div className="absolute top-[18%] right-4 text-[7px] text-slate-600 font-bold leading-tight text-right">
                     <div className="font-bold text-slate-800 uppercase mb-0.5">Right arm</div>
                     Muscle Mass {m.rightArmMuscleMass}kg
                     <br />
                     Ratio {m.rightArmMuscleRate}%
                   </div>
 
-                  <div className="absolute top-[40%] left-4 text-[7px] text-gray-500 leading-tight">
+                  <div className="absolute top-[40%] left-4 text-[7px] text-slate-600 font-bold leading-tight">
                     <div className="font-bold text-slate-800 uppercase mb-0.5">Trunk</div>
                     Muscle Mass {m.trunkMuscleMass}kg
                     <br />
                     Ratio {m.trunkMuscleRate}%
                   </div>
 
-                  <div className="absolute bottom-[22%] left-4 text-[7px] text-gray-500 leading-tight">
+                  <div className="absolute bottom-[22%] left-4 text-[7px] text-slate-600 font-bold leading-tight">
                     <div className="font-bold text-slate-800 uppercase mb-0.5">Left leg</div>
                     Muscle Mass {m.leftLegMuscleMass}kg
                     <br />
                     Ratio {m.leftLegMuscleRate}%
                   </div>
 
-                  <div className="absolute bottom-[22%] right-4 text-[7px] text-gray-500 leading-tight text-right">
+                  <div className="absolute bottom-[22%] right-4 text-[7px] text-slate-600 font-bold leading-tight text-right">
                     <div className="font-bold text-slate-800 uppercase mb-0.5">Right leg</div>
                     Muscle Mass {m.rightLegMuscleMass}kg
                     <br />
@@ -816,13 +856,13 @@ export const PatientReportPDF = React.forwardRef<HTMLDivElement, PatientReportPD
             </div>
 
             <SectionHeader title="Body composition history" />
-            <div className="bg-white p-2 rounded shadow-sm border border-gray-100 min-h-24 flex flex-col justify-center relative">
+            <div className="bg-white p-1.5 rounded shadow-sm border border-gray-100 min-h-20 flex flex-col justify-center relative">
               {/* Date Header Row */}
               <div className="flex items-center w-full mb-1 border-b border-gray-50 pb-1">
-                <div className="w-16 shrink-0 text-[6px] font-black text-slate-400 uppercase tracking-tighter">Scan Date</div>
+                <div className="w-16 shrink-0 text-[6px] font-bold text-slate-600 uppercase tracking-tighter">Scan Date</div>
                 <div className="flex-1 flex justify-between items-center px-2">
                   {scans.slice(0, 8).reverse().map((s, i) => (
-                    <div key={i} className="text-[5px] text-gray-400 font-bold uppercase">{format(new Date(s.timestamp), "dd/MM")}</div>
+                    <div key={i} className="text-[5px] text-slate-500 font-bold uppercase">{format(new Date(s.timestamp), "dd/MM")}</div>
                   ))}
                 </div>
               </div>
@@ -839,11 +879,11 @@ export const PatientReportPDF = React.forwardRef<HTMLDivElement, PatientReportPD
             <div className="flex gap-3 items-start mt-1 px-1 py-1 bg-gray-50/50 rounded-lg border border-gray-100">
               <div className="flex flex-col items-center gap-1 w-14 shrink-0">
                 <img src={scaleImage} alt="Scale" className="w-10 h-10 object-contain opacity-80" />
-                <span className="text-[5px] text-gray-400 font-bold whitespace-nowrap">CF:E9:11:06:00:5E</span>
+                <span className="text-[5px] text-slate-500 font-bold whitespace-nowrap">CF:E9:11:06:00:5E</span>
               </div>
               <div className="flex-1">
-                <div className="text-[8px] font-black text-slate-800 uppercase mb-0.5">Disclaimer</div>
-                <div className="text-[6px] text-gray-400 font-medium leading-tight text-justify">
+                <div className="text-[8px] font-bold text-slate-800 uppercase mb-0.5">Disclaimer</div>
+                <div className="text-[6px] text-slate-500 font-bold leading-tight text-justify">
                   All parameters are measured based on bioimpedance analysis technology. The data provided by this product are highly professional and practical, and its application scope should be clearly limited to the fields of health promotion and fitness guidance. It is only used as a reference for body shape control and long-term fitness testing, and is not recommended as a basis for medical data.
                 </div>
               </div>
@@ -852,7 +892,7 @@ export const PatientReportPDF = React.forwardRef<HTMLDivElement, PatientReportPD
         </div>
 
         {/* Footer Logo */}
-        <div className="absolute bottom-2 right-8">
+        <div className="absolute bottom-0 right-8">
           <img src={mayuraLogo} alt="" className="h-20 object-contain" />
         </div>
       </div>

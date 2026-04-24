@@ -1,0 +1,285 @@
+﻿
+LineNumber Line                                                                                                        
+---------- ----                                                                                                        
+        23       <div className="bg-[#b3b8bd] text-white rounded shadow-inner h-[18px] flex flex-col justify-center ...
+        27       </div>                                                                                                
+        31       <div className="flex-1 h-full w-full flex flex-col items-center justify-center bg-gray-50/30 rounde...
+        32         <div className="w-6 h-6 rounded-full border border-gray-100 flex items-center justify-center mb-1...
+        33           <div className="w-1 h-1 bg-gray-200 rounded-full animate-pulse" />                                
+        34         </div>                                                                                              
+        38       </div>                                                                                                
+        57         <div className={cn("flex items-center justify-between text-[8px] border-b border-gray-50 pb-1", i...
+        59           <div className="flex-1 px-2 relative -top-1">                                                     
+        60             <div className="flex justify-between text-[6px] font-bold text-gray-400 mb-0.5">                
+        63             </div>                                                                                          
+        64             <div className="w-full h-1 bg-gray-200 rounded-full flex overflow-hidden relative">             
+        66                 <div key={i} className={cn(c, "h-full")} style={{ width: `${100 / colors.length}%` }} />    
+        68               <div                                                                                          
+        72             </div>                                                                                          
+        73           </div>                                                                                            
+        75         </div>                                                                                              
+        89         <div className="flex items-center w-full py-1 border-b border-gray-50 last:border-0">               
+        90           <div className="w-16 shrink-0">                                                                   
+        91             <div className="text-[6px] font-black text-slate-500 uppercase tracking-tighter leading-none"...
+        92           </div>                                                                                            
+        93           <div className="flex-1 flex justify-between items-center px-2 relative h-4">                      
+        95             <div className={cn("absolute left-4 right-4 h-[0.5px] top-1/2 -translate-y-1/2 opacity-30", c...
+       102                 <div key={i} className="flex flex-col items-center relative z-10">                          
+       103                   <div className={cn("text-[5.5px] font-bold mb-0.5", colors.text)}>{val}</div>             
+       104                   <div className={cn("w-1.5 h-1.5 rounded-full border-[0.5px] border-white shadow-sm", co...
+       107                 </div>                                                                                      
+       110           </div>                                                                                            
+       111         </div>                                                                                              
+       116       <div                                                                                                  
+       123         <div className="flex justify-between items-center mb-1 px-1">                                       
+       124           <div className="flex items-center gap-2">                                                         
+       126           </div>                                                                                            
+       127           <div className="text-[9px] font-bold tracking-wide text-slate-500 uppercase">Human body composi...
+       128         </div>                                                                                              
+       131         <div className="bg-white rounded flex items-center justify-between p-2 mb-1 shadow-sm border bord...
+       132           <div className="flex items-center gap-2">                                                         
+       133             <div className="w-8 h-8 bg-gray-200 rounded-full overflow-hidden border border-gray-100">       
+       135             </div>                                                                                          
+       136             <div>                                                                                           
+       137               <div className="font-bold text-[13px] leading-tight flex items-center gap-1 text-slate-800">  
+       139               </div>                                                                                        
+       140               <div className="text-[8px] text-slate-600 font-bold">Scan Date & Time:{format(new Date(late...
+       141             </div>                                                                                          
+       142           </div>                                                                                            
+       143           <div className="border-l border-gray-100 pl-2">                                                   
+       144             <div className="text-[8px] font-bold text-center text-slate-500 uppercase">Age</div>            
+       145             <div className="text-[11px] font-bold text-slate-800">{patient.age}Age</div>                    
+       146           </div>                                                                                            
+       147           <div className="border-l border-gray-100 pl-2">                                                   
+       148             <div className="text-[8px] font-bold text-center text-slate-500 uppercase">Height</div>         
+       149             <div className="text-[11px] font-bold text-slate-800">{patient.height}cm</div>                  
+       150           </div>                                                                                            
+       151           <div className="border-l border-gray-100 pl-2 text-right">                                        
+       152             <div className="text-[8px] font-bold uppercase text-slate-500 text-center">Health Score</div>   
+       153             <div className="text-base font-black text-blue-600 tracking-tighter leading-none pb-1">         
+       157             </div>                                                                                          
+       158             {/* <div className="text-[7px] text-gray-400 font-bold uppercase mt-0.5">Standard(60~100)</di...
+       159           </div>                                                                                            
+       160         </div>                                                                                              
+       162         <div className="flex gap-1 items-start">                                                            
+       164           <div className="w-[45%] flex flex-col gap-1">                                                     
+       166             <div className="flex items-start gap-2">                                                        
+       167               <div className="flex-1 flex flex-col gap-1">                                                  
+       175                   <div key={item.l} className="bg-white px-2 py-1 rounded shadow-sm border border-gray-10...
+       176                     <div className="flex items-center gap-1 w-[45%]">                                       
+       177                       <div className={cn("w-1.5 h-1.5 rounded-full", item.c)} />                            
+       182                     </div>                                                                                  
+       184                     <div className="w-[15%] text-center font-bold text-slate-800">                          
+       186                     </div>                                                                                  
+       188                     <div className="w-[40%] text-right text-slate-500 font-bold leading-[1.2]">             
+       190                     </div>                                                                                  
+       191                   </div>                                                                                    
+       194                 <div className="text-[6.5px] text-slate-600 font-bold mt-0.5 px-1">                         
+       196                 </div>                                                                                      
+       197               </div>                                                                                        
+       200               <div className="w-28 h-28 relative flex flex-col items-center justify-center">                
+       212                 <div className="absolute flex flex-col items-center justify-center text-center">            
+       217                 </div>                                                                                      
+       218               </div>                                                                                        
+       219             </div>                                                                                          
+       222             <div className="flex flex-col gap-1">                                                           
+       275                   <div key={item.l} className="bg-white px-2 py-1 rounded shadow-sm border border-gray-10...
+       277                     <div className="flex-1 px-4 relative pt-[10px] pb-0.5">                                 
+       278                       <div className="absolute top-[-5px] left-4 right-4 h-0 text-[6px] font-bold text-sl...
+       288                       </div>                                                                                
+       289                       <div className="w-full h-1 bg-gray-100 rounded-full flex overflow-hidden relative">   
+       291                           <div                                                                              
+       297                         <div                                                                                
+       301                       </div>                                                                                
+       302                     </div>                                                                                  
+       304                   </div>                                                                                    
+       307               <div className="text-[6.5px] text-slate-600 font-bold mt-0.5 px-1">                           
+       314               </div>                                                                                        
+       315             </div>                                                                                          
+       318             <div className="flex flex-col gap-1">              {[                                           
+       367                 <div key={item.l} className="bg-white px-2 py-1 rounded shadow-sm border border-gray-100 ...
+       369                   <div className="flex-1 px-4 relative pt-[10px] pb-0.5">                                   
+       370                     <div className="absolute top-[-5px] left-4 right-4 h-0 text-[6px] font-bold text-slat...
+       380                     </div>                                                                                  
+       381                     <div className="w-full h-1 bg-gray-100 rounded-full flex overflow-hidden relative">     
+       383                         <div                                                                                
+       389                       <div                                                                                  
+       393                     </div>                                                                                  
+       394                   </div>                                                                                    
+       396                 </div>                                                                                      
+       399               <div className="text-[6.5px] text-slate-600 font-bold mt-0.5 px-1 -mb-2">                     
+       404               </div>                                                                                        
+       405             </div>                                                                                          
+       408             <div className="flex flex-col gap-1">                                                           
+       458                   <div key={item.l} className="bg-white px-2 py-1 rounded shadow-sm border border-gray-10...
+       460                     <div className="flex-1 px-4 relative pt-[10px] pb-0.5">                                 
+       461                       <div className="absolute top-[-5px]  left-4 right-4 h-0 text-[6px] font-bold text-s...
+       471                       </div>                                                                                
+       472                       <div className="w-full h-1 bg-gray-100 rounded-full flex overflow-hidden relative">   
+       474                           <div                                                                              
+       480                         <div                                                                                
+       484                       </div>                                                                                
+       485                     </div>                                                                                  
+       487                   </div>                                                                                    
+       490               <div className="text-[6.5px] text-slate-600 font-bold mt-0.5 px-1">                           
+       494               </div>                                                                                        
+       495             </div>                                                                                          
+       498             <div className="flex flex-col gap-1">                                                           
+       499               <div className="flex items-start gap-2">                                                      
+       500                 <div className="flex-1 flex flex-col gap-1">                                                
+       502                   <div className="bg-white px-2 py-1.5 rounded shadow-sm border border-gray-100 flex item...
+       503                     <div className="flex items-center gap-1.5">                                             
+       504                       <div className="w-2 h-2 rounded-full bg-blue-400" />                                  
+       508                     </div>                                                                                  
+       513                   </div>                                                                                    
+       516                   <div className="bg-white px-2 py-1 rounded shadow-sm border border-gray-100 flex items-...
+       517                     <div className="flex items-center gap-1.5">                                             
+       518                       <div className="w-2 h-2 rounded-full bg-green-400" />                                 
+       522                     </div>                                                                                  
+       529                   </div>                                                                                    
+       532                   <div className="bg-white px-2 py-1 rounded shadow-sm border border-gray-100 flex items-...
+       533                     <div className="flex items-center gap-1.5">                                             
+       534                       <div className="w-2 h-2 rounded-full bg-purple-400" />                                
+       538                     </div>                                                                                  
+       545                   </div>                                                                                    
+       546                 </div>                                                                                      
+       549                 <div className="w-28 h-16 relative flex flex-col items-center justify-center pt-2 shrink-0">
+       574                   <div className="absolute top-[45%] flex flex-col items-center">                           
+       584                   </div>                                                                                    
+       585                 </div>                                                                                      
+       586               </div>                                                                                        
+       589               <div className="text-[6.5px] text-slate-600 font-bold mt-0.5 px-1">                           
+       595               </div>                                                                                        
+       596             </div>                                                                                          
+       597           </div>                                                                                            
+       600           <div className="w-[55%] flex flex-col gap-1">                                                     
+       602             <div className=" p-0.5 rounded flex flex-col gap-1.5">                                          
+       603               <div className="grid grid-cols-2 gap-x-1.5 gap-y-0.5">                                        
+       604                 <div className="bg-white rounded h-5 px-2 flex items-center justify-between shadow-sm">     
+       607                 </div>                                                                                      
+       608                 <div className="bg-white rounded h-5 px-2 flex items-center justify-between shadow-sm">     
+       611                 </div>                                                                                      
+       612                 <div className="bg-white rounded h-5 px-2 flex items-center justify-between shadow-sm">     
+       615                 </div>                                                                                      
+       616                 <div className="bg-white rounded h-5 px-2 flex items-center justify-between shadow-sm">     
+       619                 </div>                                                                                      
+       620                 <div className="bg-white rounded h-5 px-2 flex items-center justify-between shadow-sm">     
+       623                 </div>                                                                                      
+       624                 <div className="bg-white rounded h-5 px-2 flex items-center justify-between shadow-sm">     
+       627                 </div>                                                                                      
+       628                 <div className="bg-white rounded h-5 px-2 flex items-center justify-between shadow-sm">     
+       631                 </div>                                                                                      
+       632                 <div className="bg-white rounded h-5 px-2 flex items-center justify-between shadow-sm">     
+       635                 </div>                                                                                      
+       636                 {/* <div className="bg-white rounded h-5 px-2 flex items-center justify-between shadow-sm"> 
+       639                 </div>                                                                                      
+       640                 <div className="bg-white rounded h-5 px-2 flex items-center justify-between shadow-sm">     
+       646                 </div> */}                                                                                  
+       647               </div>                                                                                        
+       649               {/* <div className="text-[5.5px] text-slate-600 leading-[1.3] mt-0.5 px-1 text-justify"> */}  
+       650               <div className="text-[6.5px] text-slate-600 font-bold mt-0.5 px-1">                           
+       655               </div>                                                                                        
+       656             </div>                                                                                          
+       657             {/* <div className="text-[6px] text-gray-400 font-bold uppercase mt-0.5 leading-tight px-1">    
+       659             </div> */}                                                                                      
+       662             <div className=" p-0.5 rounded flex flex-col gap-0.5">                                          
+       663               <div className="text-[8px] font-bold text-slate-800 ml-2">Fat Ratio</div>                     
+       665               <div className="grid grid-cols-4 gap-1">                                                      
+       667                 <div className="bg-white rounded-md h-6 flex items-center justify-center text-[8px] font-...
+       673                   <div key={item.name} className={cn(                                                       
+       678                   </div>                                                                                    
+       682                 <div className="bg-white rounded-md h-6 flex items-center justify-center text-[8px] font-...
+       688                   <div key={item.name} className={cn(                                                       
+       693                   </div>                                                                                    
+       697                 <div className="bg-white rounded-md h-6 flex items-center justify-center text-[8px] font-...
+       703                   <div key={item.name} className={cn(                                                       
+       708                   </div>                                                                                    
+       712                 <div className="h-6"></div>                                                                 
+       713                 <div className="bg-white rounded-md h-6 flex items-center justify-center text-[8px] font-...
+       714                 <div className="bg-white rounded-md h-6 flex items-center justify-center text-[8px] font-...
+       715                 <div className="bg-white rounded-md h-6 flex items-center justify-center text-[8px] font-...
+       716               </div>                                                                                        
+       718               <div className="text-[8px] font-bold text-slate-800 text-center mt-0.5">Muscle Mass</div>     
+       720               <div className="text-[6.5px] text-slate-600 font-bold mt-0.5 px-1">                           
+       724               </div>                                                                                        
+       725             </div>                                                                                          
+       728             <div className="bg-white px-1.5 py-2 rounded shadow-sm border border-gray-100 relative h-38 f...
+       740                   <div className="absolute top-[21%] left-[41.5%] w-1.5 h-1.5 bg-blue-600 rounded-full bo...
+       741                   <div className="absolute top-[21%] right-[41.5%] w-1.5 h-1.5 bg-blue-600 rounded-full b...
+       742                   <div className="absolute top-[41%] left-[50%] -translate-x-1/2 w-1.5 h-1.5 bg-blue-600 ...
+       743                   <div className="absolute bottom-[23%] left-[44%] w-1.5 h-1.5 bg-blue-600 rounded-full b...
+       744                   <div className="absolute bottom-[23%] right-[44%] w-1.5 h-1.5 bg-blue-600 rounded-full ...
+       747                   <div className="absolute top-[23%] left-24 right-[58.5%] h-px bg-blue-200" />             
+       748                   <div className="absolute top-[23%] right-24 left-[58.5%] h-px bg-blue-200" />             
+       749                   <div className="absolute top-[42.5%] left-16 right-1/2 h-px bg-blue-200" />               
+       750                   <div className="absolute bottom-[24.5%] left-16 right-[56%] h-px bg-blue-200" />          
+       751                   <div className="absolute bottom-[24.5%] right-16 left-[56%] h-px bg-blue-200" />          
+       754                   <div className="absolute top-[18%] left-4 text-[7px] text-slate-600 font-bold leading-t...
+       755                     <div className="font-bold text-slate-800 uppercase mb-0.5">Left arm</div>               
+       759                   </div>                                                                                    
+       761                   <div className="absolute top-[18%] right-4 text-[7px] text-slate-600 font-bold leading-...
+       762                     <div className="font-bold text-slate-800 uppercase mb-0.5">Right arm</div>              
+       766                   </div>                                                                                    
+       769                   <div className="absolute top-[40%] left-4 text-[7px] text-slate-600 font-bold leading-t...
+       770                     <div className="font-bold text-slate-800 uppercase mb-0.5">Trunk</div>                  
+       774                   </div>                                                                                    
+       777                   <div className="absolute bottom-[22%] left-4 text-[7px] text-slate-600 font-bold leadin...
+       778                     <div className="font-bold text-slate-800 uppercase mb-0.5">Left leg</div>               
+       782                   </div>                                                                                    
+       785                   <div className="absolute bottom-[22%] right-4 text-[7px] text-slate-600 font-bold leadi...
+       786                     <div className="font-bold text-slate-800 uppercase mb-0.5">Right leg</div>              
+       790                   </div>                                                                                    
+       794             </div>                                                                                          
+       797             <div className="bg-white px-1.5 py-2 rounded shadow-sm border border-gray-100 relative h-38 f...
+       809                   <div className="absolute top-[21%] left-[41.5%] w-1.5 h-1.5 bg-blue-600 rounded-full bo...
+       810                   <div className="absolute top-[21%] right-[41.5%] w-1.5 h-1.5 bg-blue-600 rounded-full b...
+       811                   <div className="absolute top-[41%] left-[50%] -translate-x-1/2 w-1.5 h-1.5 bg-blue-600 ...
+       812                   <div className="absolute bottom-[23%] left-[44%] w-1.5 h-1.5 bg-blue-600 rounded-full b...
+       813                   <div className="absolute bottom-[23%] right-[44%] w-1.5 h-1.5 bg-blue-600 rounded-full ...
+       816                   <div className="absolute top-[23%] left-24 right-[58.5%] h-px bg-blue-200" />             
+       817                   <div className="absolute top-[23%] right-24 left-[58.5%] h-px bg-blue-200" />             
+       818                   <div className="absolute top-[42.5%] left-16 right-1/2 h-px bg-blue-200" />               
+       819                   <div className="absolute bottom-[24.5%] left-16 right-[56%] h-px bg-blue-200" />          
+       820                   <div className="absolute bottom-[24.5%] right-16 left-[56%] h-px bg-blue-200" />          
+       822                   <div className="absolute top-[18%] left-4 text-[7px] text-slate-600 font-bold leading-t...
+       823                     <div className="font-bold text-slate-800 uppercase mb-0.5">Left arm</div>               
+       827                   </div>                                                                                    
+       829                   <div className="absolute top-[18%] right-4 text-[7px] text-slate-600 font-bold leading-...
+       830                     <div className="font-bold text-slate-800 uppercase mb-0.5">Right arm</div>              
+       834                   </div>                                                                                    
+       836                   <div className="absolute top-[40%] left-4 text-[7px] text-slate-600 font-bold leading-t...
+       837                     <div className="font-bold text-slate-800 uppercase mb-0.5">Trunk</div>                  
+       841                   </div>                                                                                    
+       843                   <div className="absolute bottom-[22%] left-4 text-[7px] text-slate-600 font-bold leadin...
+       844                     <div className="font-bold text-slate-800 uppercase mb-0.5">Left leg</div>               
+       848                   </div>                                                                                    
+       850                   <div className="absolute bottom-[22%] right-4 text-[7px] text-slate-600 font-bold leadi...
+       851                     <div className="font-bold text-slate-800 uppercase mb-0.5">Right leg</div>              
+       855                   </div>                                                                                    
+       858             </div>                                                                                          
+       861             <div className="bg-white p-1.5 rounded shadow-sm border border-gray-100 min-h-20 flex flex-co...
+       863               <div className="flex items-center w-full mb-1 border-b border-gray-50 pb-1">                  
+       864                 <div className="w-16 shrink-0 text-[6px] font-bold text-slate-600 uppercase tracking-tigh...
+       865                 <div className="flex-1 flex justify-between items-center px-2">                             
+       867                     <div key={i} className="text-[5px] text-slate-500 font-bold uppercase">{format(new Da...
+       869                 </div>                                                                                      
+       870               </div>                                                                                        
+       872               <div className="flex flex-col w-full">                                                        
+       876               </div>                                                                                        
+       877             </div>                                                                                          
+       881             <div className="flex gap-3 items-start mt-1 px-1 py-1 bg-gray-50/50 rounded-lg border border-...
+       882               <div className="flex flex-col items-center gap-1 w-14 shrink-0">                              
+       885               </div>                                                                                        
+       886               <div className="flex-1">                                                                      
+       887                 <div className="text-[8px] font-bold text-slate-800 uppercase mb-0.5">Disclaimer</div>      
+       888                 <div className="text-[6px] text-slate-500 font-bold leading-tight text-justify">            
+       890                 </div>                                                                                      
+       891               </div>                                                                                        
+       892             </div>                                                                                          
+       893           </div>                                                                                            
+       894         </div>                                                                                              
+       897         <div className="absolute bottom-0 right-8">                                                         
+       899         </div>                                                                                              
+       900       </div>                                                                                                
+
+

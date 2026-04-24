@@ -2,7 +2,8 @@ import { useRef, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, Download, Printer, Share2, Building2, Cpu, Calendar, Phone, Mail, Activity, Dumbbell, Droplet, Flame, Zap, Settings2, AlertCircle, TrendingUp, TrendingDown, Loader2 } from "lucide-react";
 import { PatientReportPDF } from "@/components/PatientReportPDF";
-import html2pdf from "html2pdf.js";
+import { toCanvas } from "html-to-image";
+import jsPDF from "jspdf";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -49,6 +50,36 @@ export default function PatientDetail() {
   const previous = scans[1];
   const m = latest.measurement;
 
+  const generatePDFBlob = async (element: HTMLElement) => {
+    // html-to-image is much more accurate than html2canvas for vertical alignment
+    const canvas = await toCanvas(element, {
+      quality: 1,
+      pixelRatio: 2,
+      backgroundColor: '#f0f2f5',
+      skipFonts: false,
+      width: 800,
+      height: 1132
+    });
+
+    const imgData = canvas.toDataURL('image/jpeg', 1.0);
+    const pdf = new jsPDF({
+      orientation: 'portrait',
+      unit: 'mm',
+      format: 'a4',
+      compress: true
+    });
+
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = pdf.internal.pageSize.getHeight();
+
+    // Fill background for the whole PDF page to avoid white strips
+    pdf.setFillColor(240, 242, 245); // #f0f2f5
+    pdf.rect(0, 0, pdfWidth, pdfHeight, 'F');
+
+    pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight, undefined, 'FAST');
+    return pdf.output('blob');
+  };
+
   const handlePrint = async () => {
     const element = reportRef.current;
     if (!element) return;
@@ -56,15 +87,7 @@ export default function PatientDetail() {
     toast.loading("Preparing report for printing...", { id: "print-report" });
 
     try {
-      const opt = {
-        margin: 0,
-        filename: `Mayurah_Report_${patient.name.replace(/\s+/g, '_')}.pdf`,
-        image: { type: 'jpeg' as const, quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true, logging: false },
-        jsPDF: { unit: 'mm' as const, format: 'a4' as const, orientation: 'portrait' as const }
-      };
-
-      const pdfBlob = await html2pdf().from(element).set(opt).output('blob');
+      const pdfBlob = await generatePDFBlob(element);
       const url = URL.createObjectURL(pdfBlob);
 
       const iframe = document.createElement('iframe');
@@ -98,16 +121,9 @@ export default function PatientDetail() {
     toast.loading("Preparing document for sharing...", { id: "share-report" });
 
     try {
-      const opt = {
-        margin: 0,
-        filename: `Mayurah_Report_${patient.name.replace(/\s+/g, '_')}.pdf`,
-        image: { type: 'jpeg' as const, quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true, logging: false },
-        jsPDF: { unit: 'mm' as const, format: 'a4' as const, orientation: 'portrait' as const }
-      };
-
-      const pdfBlob = await html2pdf().from(element).set(opt).output('blob');
-      const file = new File([pdfBlob], opt.filename, { type: 'application/pdf' });
+      const pdfBlob = await generatePDFBlob(element);
+      const filename = `Mayurah_Report_${patient.name.replace(/\s+/g, '_')}.pdf`;
+      const file = new File([pdfBlob], filename, { type: 'application/pdf' });
 
       if (navigator.canShare && navigator.canShare({ files: [file] })) {
         await navigator.share({
@@ -117,14 +133,13 @@ export default function PatientDetail() {
         });
         toast.success("Report shared successfully", { id: "share-report" });
       } else {
-        // Fallback for desktop or non-sharing browsers
         const url = URL.createObjectURL(pdfBlob);
         const link = document.createElement('a');
         link.href = url;
-        link.download = opt.filename;
+        link.download = filename;
         link.click();
         URL.revokeObjectURL(url);
-        toast.success("PDF generated and downloaded (Share API not supported on this browser)", { id: "share-report" });
+        toast.success("PDF generated and downloaded", { id: "share-report" });
       }
     } catch (err) {
       if ((err as Error).name !== "AbortError") {
@@ -221,19 +236,19 @@ export default function PatientDetail() {
     const element = reportRef.current;
     if (!element) return;
 
-    const opt = {
-      margin: 0,
-      filename: `Report_${patient.id}_${format(new Date(), "yyyyMMdd")}.pdf`,
-      image: { type: 'jpeg' as const, quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true, logging: false },
-      jsPDF: { unit: 'mm' as const, format: 'a4' as const, orientation: 'portrait' as const }
-    };
-
     setIsDownloading(true);
     try {
-      await html2pdf().set(opt).from(element).save();
+      const pdfBlob = await generatePDFBlob(element);
+      const filename = `Report_${patient.id}_${format(new Date(), "yyyyMMdd")}.pdf`;
+      const url = URL.createObjectURL(pdfBlob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      link.click();
+      URL.revokeObjectURL(url);
     } catch (err) {
       console.error("PDF Generation Error:", err);
+      toast.error("Could not generate PDF");
     } finally {
       setIsDownloading(false);
     }
