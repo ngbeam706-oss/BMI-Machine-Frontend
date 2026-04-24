@@ -137,7 +137,7 @@ export const PatientReportPDF = React.forwardRef<HTMLDivElement, PatientReportPD
               <div className="font-bold text-[13px] leading-tight flex items-center gap-1">
                 {patient.name} <span className="text-blue-500 text-[10px]">♂</span>
               </div>
-              <div className="text-[8px] text-gray-500 font-medium">{format(new Date(latestScan.timestamp), "dd-MM-yyyy HH:mm")}</div>
+              <div className="text-[8px] text-gray-500 font-medium">Scan Date & Time:{format(new Date(latestScan.timestamp), "dd-MM-yyyy HH:mm")}</div>
             </div>
           </div>
           <div className="border-l border-gray-100 pl-2">
@@ -826,7 +826,7 @@ export const PatientReportPDF = React.forwardRef<HTMLDivElement, PatientReportPD
                   ))}
                 </div>
               </div>
-              
+
               <div className="flex flex-col w-full">
                 <SparklineHistory dataKey="weight" label="Weight (kg)" color="blue" max={120} />
                 <SparklineHistory dataKey="muscleMass" label="Muscle (kg)" color="green" max={80} />
@@ -852,7 +852,7 @@ export const PatientReportPDF = React.forwardRef<HTMLDivElement, PatientReportPD
         </div>
 
         {/* Footer Logo */}
-        <div className="absolute bottom-6 right-8">
+        <div className="absolute bottom-2 right-8">
           <img src={mayuraLogo} alt="" className="h-20 object-contain" />
         </div>
       </div>

@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { StatusBadge } from "@/components/StatusBadges";
-import { MetricGroup, MetricRow, MetricSquare } from "@/components/MetricGroup";
+import { MetricGroup, MetricRow, MetricSquare, MetricWide } from "@/components/MetricGroup";
 import { BodySegmentDiagram } from "@/components/BodySegmentDiagram";
 import { GaugeCard } from "@/components/GaugeCard";
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, PieChart, Pie, Cell } from "recharts";
@@ -66,7 +66,7 @@ export default function PatientDetail() {
 
       const pdfBlob = await html2pdf().from(element).set(opt).output('blob');
       const url = URL.createObjectURL(pdfBlob);
-      
+
       const iframe = document.createElement('iframe');
       iframe.style.position = 'fixed';
       iframe.style.right = '0';
@@ -147,13 +147,14 @@ export default function PatientDetail() {
     return Number((cur - prev).toFixed(1));
   };
 
-  // Composition pie
+  // Composition pie (5-Component Model: Sum equals total weight)
+  const otherMinerals = Math.max(0, Number((m.minerals - m.boneMass).toFixed(2)));
   const compData = [
-    { name: "Muscle", value: m.muscleMass, color: "hsl(var(--primary))" },
     { name: "Fat", value: m.fatMass, color: "hsl(var(--warning))" },
     { name: "Water", value: m.totalBodyWater, color: "hsl(var(--info))" },
     { name: "Protein", value: m.proteinMass, color: "hsl(var(--accent))" },
-    { name: "Minerals", value: m.minerals, color: "hsl(var(--muted-foreground))" },
+    { name: "Bone", value: m.boneMass, color: "hsl(var(--primary))" },
+    { name: "Other Minerals", value: otherMinerals, color: "hsl(var(--muted-foreground))" },
   ].filter(d => d.value > 0);
 
   // Radar
@@ -259,7 +260,11 @@ export default function PatientDetail() {
                 <h1 className="text-2xl font-bold tracking-tight">{patient.name}</h1>
                 <StatusBadge status={latest.status} />
               </div>
-              <p className="text-sm text-muted-foreground">{patient.id} · {patient.gender} · {patient.age} years · {patient.height} cm</p>
+              <p className="text-sm text-muted-foreground flex flex-wrap gap-x-3 gap-y-1">
+                <span>UHID: <span className="font-mono text-primary font-medium">{patient.uhid}</span></span>
+                <span>DOB: <span className="font-medium text-foreground/80">{patient.dob !== "N/A" ? format(new Date(patient.dob), "dd-MM-yyyy") : "N/A"}</span></span>
+                <span>{patient.gender} · {patient.age} yrs · {patient.height} cm</span>
+              </p>
             </div>
             <div className="flex flex-wrap gap-2">
               <Button variant="outline" size="sm" onClick={handleShare}>
@@ -268,8 +273,8 @@ export default function PatientDetail() {
               <Button variant="outline" size="sm" onClick={handlePrint}>
                 <Printer className="h-4 w-4 mr-2" /> Print
               </Button>
-              <Button 
-                size="sm" 
+              <Button
+                size="sm"
                 className="bg-gradient-primary text-primary-foreground hover:opacity-90 min-w-[140px]"
                 onClick={handleDownloadPDF}
                 disabled={isDownloading}
@@ -285,7 +290,7 @@ export default function PatientDetail() {
           </div>
 
           <div className="fixed pointer-events-none opacity-0 left-[-9999px] bg-white">
-            <PatientReportPDF 
+            <PatientReportPDF
               ref={reportRef}
               patient={patient}
               latestScan={latest}
@@ -295,48 +300,42 @@ export default function PatientDetail() {
             />
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6 pt-6 border-t border-border text-sm">
-            <div className="flex items-center gap-2"><Building2 className="h-4 w-4 text-muted-foreground" /><div><p className="text-xs text-muted-foreground">Branch</p><p className="font-semibold">{branch.name.replace("Mayurah ", "")}</p></div></div>
-            <div className="flex items-center gap-2"><Cpu className="h-4 w-4 text-muted-foreground" /><div><p className="text-xs text-muted-foreground">Device</p><p className="font-semibold">{device.id} · {device.model}</p></div></div>
-            <div className="flex items-center gap-2"><Calendar className="h-4 w-4 text-muted-foreground" /><div><p className="text-xs text-muted-foreground">Scan Date</p><p className="font-semibold">{format(new Date(latest.timestamp), "d MMM yyyy, HH:mm")}</p></div></div>
-            <div className="flex items-center gap-2"><Phone className="h-4 w-4 text-muted-foreground" /><div><p className="text-xs text-muted-foreground">Contact</p><p className="font-semibold">{patient.phone}</p></div></div>
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-2 mt-4 pt-4 border-t border-border/40 text-[11px] text-muted-foreground">
+            <div className="flex items-center gap-1.5"><Building2 className="h-3.5 w-3.5" /><span className="font-medium text-foreground/70">{branch.name.replace("Mayurah ", "")}</span></div>
+            <div className="flex items-center gap-1.5"><Cpu className="h-3.5 w-3.5" /><span className="font-medium text-foreground/70">{device.id} · {device.model}</span></div>
+            <div className="flex items-center gap-1.5"><Calendar className="h-3.5 w-3.5" /><span className="font-medium text-foreground/70">{format(new Date(latest.timestamp), "d MMM yyyy, HH:mm")}</span></div>
+            <div className="flex items-center gap-1.5"><Phone className="h-3.5 w-3.5" /><span className="font-medium text-foreground/70">{patient.phone}</span></div>
           </div>
         </div>
       </div>
 
       {/* Clinical Interpretation / Dynamic Insights */}
       {(m.healthEvaluation !== "N/A" || flags.length > 0) && (
-        <div className="card-elevated p-5 mb-6 border-l-4 border-l-primary bg-gradient-to-r from-primary-soft/40 to-transparent">
-          <div className="flex items-start gap-3">
-            <div className="h-10 w-10 rounded-xl bg-primary text-primary-foreground flex items-center justify-center shrink-0"><AlertCircle className="h-5 w-5" /></div>
+        <div className="card-elevated p-4 mb-6 border-l-4 border-l-primary bg-gradient-to-r from-primary-soft/30 to-transparent">
+          <div className="flex flex-col md:flex-row gap-4 items-start">
+            <div className="flex items-center gap-3 shrink-0">
+              <div className="h-9 w-9 rounded-xl bg-primary text-primary-foreground flex items-center justify-center"><AlertCircle className="h-5 w-5" /></div>
+              <h3 className="font-bold text-sm text-foreground">Clinical Insights</h3>
+            </div>
             <div className="flex-1">
-              <h3 className="font-bold text-foreground mb-1">Health Evaluation & Insights</h3>
-              <p className="text-sm text-muted-foreground mb-3">
+              <p className="text-xs text-muted-foreground leading-relaxed">
                 {getD("ppBodyHealth")?.standeEvaluation || (
-                  <>
-                    {m.healthEvaluation === "Excellent" && "Patient shows excellent body composition balance. Continue current lifestyle and routine check-ups."}
-                    {m.healthEvaluation === "Healthy" && "Patient is within healthy ranges. Monitor visceral fat and maintain hydration."}
-                    {m.healthEvaluation === "Needs Attention" && "Some metrics fall outside optimal ranges. Recommend nutritional consult and supervised exercise."}
-                    {m.healthEvaluation === "At Risk" && "Multiple high-risk indicators detected. Immediate clinical follow-up advised."}
-                  </>
+                  m.healthEvaluation === "Excellent" ? "Patient shows excellent body composition balance. Continue current lifestyle." :
+                    m.healthEvaluation === "Healthy" ? "Patient is within healthy ranges. Maintain hydration." :
+                      m.healthEvaluation === "Needs Attention" ? "Some metrics fall outside optimal ranges. Recommend nutritional consult." :
+                        "Multiple high-risk indicators detected. Clinical follow-up advised."
                 )}
               </p>
               {getD("ppBodyHealth")?.standSuggestion && (
-                <div className="mt-4 p-3 rounded-xl bg-card/50 border border-border/50">
-                  <p className="text-xs font-bold text-primary mb-1 uppercase tracking-wider">Professional Suggestion</p>
-                  <p className="text-sm text-foreground/90">{getD("ppBodyHealth")?.standSuggestion}</p>
-                </div>
+                <p className="text-[11px] font-medium text-primary mt-1">Suggestion: {getD("ppBodyHealth")?.standSuggestion}</p>
               )}
-              {flags.length > 0 && (
-                <div className="flex flex-wrap gap-2 mt-4">
-                  {flags.map((f, i) => (
-                    <span key={i} className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold border ${f.severity === "danger" ? "bg-destructive/10 text-destructive border-destructive/20" : "bg-warning-soft text-warning border-warning/20"}`}>
-                      <span className={`h-1.5 w-1.5 rounded-full ${f.severity === "danger" ? "bg-destructive" : "bg-warning"}`} />
-                      {f.label}
-                    </span>
-                  ))}
-                </div>
-              )}
+            </div>
+            <div className="flex flex-wrap gap-1.5 shrink-0">
+              {flags.map((f, i) => (
+                <span key={i} className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold border ${f.severity === "danger" ? "bg-destructive/5 text-destructive border-destructive/10" : "bg-warning-soft text-warning border-warning/10"}`}>
+                  {f.label}
+                </span>
+              ))}
             </div>
           </div>
         </div>
@@ -347,6 +346,8 @@ export default function PatientDetail() {
         <GaugeCard
           label="Health Score"
           value={m.healthScore}
+          min={getD("ppBodyScore")?.standardArray?.[0] || 0}
+          max={getD("ppBodyScore")?.standardArray?.[4] || 100}
           status={getD("ppBodyScore")?.standardTitle || m.healthEvaluation}
           overrideColor={getD("ppBodyScore")?.standColor}
           thresholds={{ warning: 60, danger: 50 }}
@@ -354,8 +355,8 @@ export default function PatientDetail() {
         <GaugeCard
           label="BMI"
           value={m.bmi}
-          max={getD("ppBMI")?.standardArray?.[1] || 45}
-          min={getD("ppBMI")?.standardArray?.[0] || 10}
+          max={getD("ppBMI")?.standardArray?.[1] || 25}
+          min={getD("ppBMI")?.standardArray?.[0] || 18.5}
           unit="kg/m²"
           status={getD("ppBMI")?.standardTitle || m.obesityLevel}
           overrideColor={getD("ppBMI")?.standColor}
@@ -365,7 +366,8 @@ export default function PatientDetail() {
           <GaugeCard
             label="Visceral Fat"
             value={m.visceralFat}
-            max={getD("ppVisceralFat")?.standardArray?.[1] || 20}
+            min={getD("ppVisceralFat")?.standardArray?.[0] || 1}
+            max={getD("ppVisceralFat")?.standardArray?.[1] || 9}
             unit="level"
             status={getD("ppVisceralFat")?.standardTitle || (m.visceralFat > 12 ? "High" : m.visceralFat > 9 ? "Moderate" : "Normal")}
             overrideColor={getD("ppVisceralFat")?.standColor}
@@ -376,7 +378,8 @@ export default function PatientDetail() {
           <GaugeCard
             label="Body Fat %"
             value={m.fatRatio}
-            max={getD("ppFat")?.standardArray?.[1] || 50}
+            min={getD("ppFat")?.standardArray?.[0] || 10}
+            max={getD("ppFat")?.standardArray?.[1] || 20}
             unit="%"
             status={getD("ppFat")?.standardTitle || (m.fatRatio > 28 ? "High" : "Normal")}
             overrideColor={getD("ppFat")?.standColor}
@@ -391,112 +394,111 @@ export default function PatientDetail() {
           <TabsTrigger value="overview" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Overview</TabsTrigger>
           {hasAdvancedData && <TabsTrigger value="composition" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Composition</TabsTrigger>}
           {hasAdvancedData && <TabsTrigger value="segmental" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Segmental</TabsTrigger>}
+          <TabsTrigger value="impedance" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Impedance</TabsTrigger>
           <TabsTrigger value="trends" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Trends & History</TabsTrigger>
         </TabsList>
 
         {/* Overview */}
         <TabsContent value="overview" className="mt-6 space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            {hasCompositionData && (
-              <div className="card-elevated p-5 lg:col-span-2">
-                <h3 className="font-bold mb-4">Body Composition Distribution</h3>
-                <ResponsiveContainer width="100%" height={260}>
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+            <div className="card-elevated p-4 flex flex-col md:flex-row gap-4 items-center">
+              <div className="flex-1 w-full">
+                <h3 className="font-bold text-sm mb-4">Composition Distribution</h3>
+                <ResponsiveContainer width="100%" height={220}>
                   <PieChart>
-                    <Pie data={compData} dataKey="value" innerRadius={60} outerRadius={100} paddingAngle={2}>
+                    <Pie data={compData} dataKey="value" innerRadius={50} outerRadius={80} paddingAngle={2}>
                       {compData.map((d, i) => <Cell key={i} fill={d.color} />)}
                     </Pie>
-                    <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 12 }} />
+                    <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 12, fontSize: "11px" }} />
                   </PieChart>
                 </ResponsiveContainer>
-                <div className="grid grid-cols-2 md:grid-cols-5 gap-2 mt-2">
-                  {compData.map((d) => (
-                    <div key={d.name} className="text-center p-2 rounded-lg bg-muted/30">
-                      <span className="block h-2 w-2 rounded-full mx-auto mb-1" style={{ background: d.color }} />
-                      <p className="text-[10px] text-muted-foreground uppercase">{d.name}</p>
-                      <p className="font-bold text-sm">{d.value} kg</p>
+              </div>
+              <div className="grid grid-cols-2 gap-2 w-full md:w-auto shrink-0">
+                {compData.map((d) => (
+                  <div key={d.name} className="p-2 rounded-xl bg-muted/20 border border-border/30 min-w-[100px]">
+                    <div className="flex items-center gap-1.5 mb-0.5">
+                      <span className="h-2 w-2 rounded-full" style={{ background: d.color }} />
+                      <p className="text-[10px] text-muted-foreground font-bold uppercase">{d.name}</p>
                     </div>
-                  ))}
-                </div>
+                    <p className="font-bold text-sm">{d.value} <span className="text-[10px] font-normal opacity-70">kg</span></p>
+                  </div>
+                ))}
               </div>
-            )}
+            </div>
 
-            {hasAdvancedData && (
-              <div className="card-elevated p-5">
-                <h3 className="font-bold mb-4">Balance Profile</h3>
-                <ResponsiveContainer width="100%" height={280}>
-                  <RadarChart data={radarData}>
-                    <PolarGrid stroke="hsl(var(--border))" />
-                    <PolarAngleAxis dataKey="metric" tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 11 }} />
-                    <PolarRadiusAxis tick={false} axisLine={false} />
-                    <Radar dataKey="value" stroke="hsl(var(--primary))" fill="hsl(var(--primary))" fillOpacity={0.3} strokeWidth={2} />
-                  </RadarChart>
-                </ResponsiveContainer>
-              </div>
-            )}
+            <div className="card-elevated p-4">
+              <h3 className="font-bold text-sm mb-2">Anatomical Balance</h3>
+              <ResponsiveContainer width="100%" height={260}>
+                <RadarChart data={radarData}>
+                  <PolarGrid stroke="hsl(var(--border))" />
+                  <PolarAngleAxis dataKey="metric" tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10 }} />
+                  <PolarRadiusAxis tick={false} axisLine={false} />
+                  <Radar dataKey="value" stroke="hsl(var(--primary))" fill="hsl(var(--primary))" fillOpacity={0.3} strokeWidth={2} />
+                </RadarChart>
+              </ResponsiveContainer>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <MetricGroup title="Basic Body Metrics" icon={<Activity className="h-5 w-5" />} accent="primary" isGrid>
-              <MetricSquare label="Weight" value={m.weight} unit="kg" statusText={getD("ppWeightKg")?.standardTitle} statusColor={getD("ppWeightKg")?.standColor} />
-              <MetricSquare label="BMI" value={m.bmi} unit="kg/m²" statusText={getD("ppBMI")?.standardTitle} statusColor={getD("ppBMI")?.standColor} />
+            <MetricGroup title="Basic Body Metrics" icon={<Activity className="h-5 w-5" />} accent="primary" isGrid gridCols={3}>
+              <MetricSquare label="Weight" value={m.weight} unit="kg" min={getD("ppWeightKg")?.standardArray?.[0]} max={getD("ppWeightKg")?.standardArray?.[1]} statusText={getD("ppWeightKg")?.standardTitle} statusColor={getD("ppWeightKg")?.standColor} />
+              <MetricSquare label="BMI" value={m.bmi} unit="kg/m²" min={getD("ppBMI")?.standardArray?.[0]} max={getD("ppBMI")?.standardArray?.[1]} statusText={getD("ppBMI")?.standardTitle} statusColor={getD("ppBMI")?.standColor} />
               {m.standardWeight > 0 && <MetricSquare label="Standard Wt" value={m.standardWeight} unit="kg" />}
-              {m.bodyAge > 0 && <MetricSquare label="Body Age" value={m.bodyAge} unit="yrs" statusText={getD("ppBodyAge")?.standardTitle} statusColor={getD("ppBodyAge")?.standColor} />}
+              {m.bodyAge > 0 && <MetricSquare label="Body Age" value={m.bodyAge} unit="yrs" min={getD("ppBodyAge")?.standardArray?.[1]} max={getD("ppBodyAge")?.standardArray?.[2]} statusText={getD("ppBodyAge")?.standardTitle} statusColor={getD("ppBodyAge")?.standColor} />}
               {m.bodyType !== "N/A" && <MetricSquare label="Body Type" value={m.bodyType} statusText={getD("ppBodyType")?.standardTitle} />}
-              {m.healthEvaluation !== "N/A" && <MetricSquare label="Evaluation" value={m.healthEvaluation} statusText={getD("ppBodyHealth")?.standardTitle} statusColor={getD("ppBodyHealth")?.standColor} />}
-              {m.healthScore > 0 && <MetricSquare label="Health Score" value={m.healthScore} unit="/100" statusText={getD("ppBodyScore")?.standardTitle} statusColor={getD("ppBodyScore")?.standColor} />}
+
+              {m.healthScore > 0 && <MetricSquare label="Health Score" value={m.healthScore} unit="/100" min={getD("ppBodyScore")?.standardArray?.[0]} max={getD("ppBodyScore")?.standardArray?.[4]} statusText={getD("ppBodyScore")?.standardTitle} statusColor={getD("ppBodyScore")?.standColor} />}
             </MetricGroup>
 
-            <MetricGroup title="Metabolic & Health" icon={<Zap className="h-5 w-5" />} accent="warning" isGrid>
-              {m.bmr > 0 && <MetricSquare label="BMR" value={m.bmr} unit="kcal" statusText={getD("ppBMR")?.standardTitle} statusColor={getD("ppBMR")?.standColor} />}
+            <MetricGroup title="Metabolic & Health" icon={<Zap className="h-5 w-5" />} accent="warning" isGrid gridCols={3}>
+              {m.bmr > 0 && <MetricSquare label="BMR" value={m.bmr} unit="kcal" min={getD("ppBMR")?.standardArray?.[0]} max={getD("ppBMR")?.standardArray?.[1]} statusText={getD("ppBMR")?.standardTitle} statusColor={getD("ppBMR")?.standColor} />}
               {m.recommendedCalories > 0 && <MetricSquare label="Recommended" value={m.recommendedCalories} unit="kcal" />}
               {m.weightControl !== 0 && <MetricSquare label="Wt Control" value={m.weightControl} unit="kg" />}
-              {m.waistHipRatio > 0 && <MetricSquare label="Waist-Hip" value={m.waistHipRatio} statusText={getD("ppWHR")?.standardTitle} statusColor={getD("ppWHR")?.standColor} />}
-              {m.obesityLevel !== "N/A" && <MetricSquare label="Obesity Lvl" value={m.obesityLevel} statusText={getD("ppObesity")?.standardTitle} statusColor={getD("ppObesity")?.standColor} />}
-              {m.obesityDegree > 0 && <MetricSquare label="Obesity Deg" value={m.obesityDegree} unit="%" />}
-              {m.visceralFat > 0 && <MetricSquare label="Visceral Fat" value={m.visceralFat} unit="lvl" statusText={getD("ppVisceralFat")?.standardTitle} statusColor={getD("ppVisceralFat")?.standColor} />}
+              {m.waistHipRatio > 0 && <MetricSquare label="Waist-Hip" value={m.waistHipRatio} min={getD("ppWHR")?.standardArray?.[0]} max={getD("ppWHR")?.standardArray?.[1]} statusText={getD("ppWHR")?.standardTitle} statusColor={getD("ppWHR")?.standColor} />}
+              {m.obesityLevel !== "N/A" && <MetricSquare label="Obesity Lvl" value={m.obesityLevel} min={getD("ppObesity")?.standardArray?.[0]} max={getD("ppObesity")?.standardArray?.[1]} statusText={getD("ppObesity")?.standardTitle} statusColor={getD("ppObesity")?.standColor} />}
+              {m.visceralFat > 0 && <MetricSquare label="Visceral Fat" value={m.visceralFat} unit="lvl" min={getD("ppVisceralFat")?.standardArray?.[0]} max={getD("ppVisceralFat")?.standardArray?.[1]} statusText={getD("ppVisceralFat")?.standardTitle} statusColor={getD("ppVisceralFat")?.standColor} />}
             </MetricGroup>
           </div>
         </TabsContent>
 
         {/* Composition */}
-        <TabsContent value="composition" className="mt-6 space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <MetricGroup title="Muscle Metrics" icon={<Dumbbell className="h-5 w-5" />} accent="primary" isGrid>
-              <MetricSquare label="Skeletal Muscle Mass" value={m.skeletalMuscleMass} unit="kg" statusText={getD("ppBodySkeletalKg")?.standardTitle} statusColor={getD("ppBodySkeletalKg")?.standColor} />
-              <MetricSquare label="Skeletal Muscle Ratio" value={m.skeletalMuscleRatio} unit="%" statusText={getD("ppBodySkeletal")?.standardTitle} statusColor={getD("ppBodySkeletal")?.standColor} />
-              <MetricSquare label="SMQI" value={m.smqi} statusText={getD("ppSmi")?.standardTitle} statusColor={getD("ppSmi")?.standColor} />
-              <MetricSquare label="Muscle Mass" value={m.muscleMass} unit="kg" statusText={getD("ppMuscleKg")?.standardTitle} statusColor={getD("ppMuscleKg")?.standColor} />
-              <MetricSquare label="Muscle Rate" value={m.muscleRate} unit="%" statusText={getD("ppMusclePercentage")?.standardTitle} statusColor={getD("ppMusclePercentage")?.standColor} />
-              <MetricSquare label="Trunk Muscle Mass" value={m.trunkMuscleMass} unit="kg" statusText={getD("ppMuscleKgTrunk")?.standardTitle} statusColor={getD("ppMuscleKgTrunk")?.standColor} />
-              <MetricSquare label="Trunk Muscle Rate" value={m.trunkMuscleRate} unit="%" statusText={getD("ppMuscleRateTrunk")?.standardTitle} statusColor={getD("ppMuscleRateTrunk")?.standColor} />
-              <MetricSquare label="Muscle Control" value={m.muscleControl} unit="kg" statusText={getD("ppBodyMuscleControl")?.standardTitle} statusColor={getD("ppBodyMuscleControl")?.standColor} />
+        <TabsContent value="composition" className="mt-6 space-y-6">
+          <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+            <MetricGroup title="Muscle Metrics" icon={<Dumbbell className="h-5 w-5" />} accent="primary" isGrid gridCols={2} className="xl:col-span-1">
+              <MetricWide label="Skeletal Muscle Mass" value={m.skeletalMuscleMass} unit="kg" min={getD("ppBodySkeletalKg")?.standardArray?.[0]} max={getD("ppBodySkeletalKg")?.standardArray?.[1]} statusText={getD("ppBodySkeletalKg")?.standardTitle} statusColor={getD("ppBodySkeletalKg")?.standColor} />
+              <MetricWide label="Skeletal Muscle Ratio" value={m.skeletalMuscleRatio} unit="%" min={getD("ppBodySkeletal")?.standardArray?.[0]} max={getD("ppBodySkeletal")?.standardArray?.[1]} statusText={getD("ppBodySkeletal")?.standardTitle} statusColor={getD("ppBodySkeletal")?.standColor} />
+              <MetricWide label="SMQI" value={m.smqi} min={getD("ppSmi")?.standardArray?.[0]} statusText={getD("ppSmi")?.standardTitle} statusColor={getD("ppSmi")?.standColor} />
+              <MetricWide label="Muscle Mass" value={m.muscleMass} unit="kg" min={getD("ppMuscleKg")?.standardArray?.[0]} max={getD("ppMuscleKg")?.standardArray?.[1]} statusText={getD("ppMuscleKg")?.standardTitle} statusColor={getD("ppMuscleKg")?.standColor} />
+              <MetricWide label="Muscle Rate" value={m.muscleRate} unit="%" min={getD("ppMusclePercentage")?.standardArray?.[0]} max={getD("ppMusclePercentage")?.standardArray?.[1]} statusText={getD("ppMusclePercentage")?.standardTitle} statusColor={getD("ppMusclePercentage")?.standColor} />
+              <MetricWide label="Trunk Muscle Mass" value={m.trunkMuscleMass} unit="kg" statusText={getD("ppMuscleKgTrunk")?.standardTitle} />
+              <MetricWide label="Trunk Muscle Rate" value={m.trunkMuscleRate} unit="%" statusText={getD("ppMuscleRateTrunk")?.standardTitle} />
+              <MetricWide label="Muscle Control" value={m.muscleControl} unit="kg" statusText={getD("ppBodyMuscleControl")?.standardTitle} />
             </MetricGroup>
 
-            <MetricGroup title="Fat Metrics" icon={<Flame className="h-5 w-5" />} accent="warning" isGrid>
-              <MetricSquare label="Fat Mass" value={m.fatMass} unit="kg" statusText={getD("ppBodyfatKg")?.standardTitle} statusColor={getD("ppBodyfatKg")?.standColor} />
-              <MetricSquare label="Fat Ratio" value={m.fatRatio} unit="%" statusText={getD("ppFat")?.standardTitle} statusColor={getD("ppFat")?.standColor} />
-              <MetricSquare label="Subcutaneous Fat Mass" value={m.subcutaneousFatMass} unit="kg" statusText={getD("ppBodyFatSubCutKg")?.standardTitle} statusColor={getD("ppBodyFatSubCutKg")?.standColor} />
-              <MetricSquare label="Subcutaneous Fat Ratio" value={m.subcutaneousFatRatio} unit="%" statusText={getD("ppBodyFatSubCutPercentage")?.standardTitle} statusColor={getD("ppBodyFatSubCutPercentage")?.standColor} />
-              <MetricSquare label="Trunk Fat Mass" value={m.trunkFatMass} unit="kg" statusText={getD("ppBodyFatKgTrunk")?.standardTitle} statusColor={getD("ppBodyFatKgTrunk")?.standColor} />
-              <MetricSquare label="Trunk Fat Percentage" value={m.trunkFatPercentage} unit="%" statusText={getD("ppBodyFatRateTrunk")?.standardTitle} statusColor={getD("ppBodyFatRateTrunk")?.standColor} />
-              <MetricSquare label="Visceral Fat" value={m.visceralFat} unit="lvl" statusText={getD("ppVisceralFat")?.standardTitle} statusColor={getD("ppVisceralFat")?.standColor} />
-              <MetricSquare label="Fat Control" value={m.fatControl} unit="kg" statusText={getD("ppFatControlKg")?.standardTitle} statusColor={getD("ppFatControlKg")?.standColor} />
+            <MetricGroup title="Fat Metrics" icon={<Flame className="h-5 w-5" />} accent="warning" isGrid gridCols={2} className="xl:col-span-1">
+              <MetricWide label="Fat Mass" value={m.fatMass} unit="kg" min={getD("ppBodyfatKg")?.standardArray?.[0]} max={getD("ppBodyfatKg")?.standardArray?.[1]} statusText={getD("ppBodyfatKg")?.standardTitle} statusColor={getD("ppBodyfatKg")?.standColor} />
+              <MetricWide label="Fat Ratio" value={m.fatRatio} unit="%" min={getD("ppFat")?.standardArray?.[0]} max={getD("ppFat")?.standardArray?.[1]} statusText={getD("ppFat")?.standardTitle} statusColor={getD("ppFat")?.standColor} />
+              <MetricWide label="Subcutaneous Fat Mass" value={m.subcutaneousFatMass} unit="kg" min={getD("ppBodyFatSubCutKg")?.standardArray?.[0]} max={getD("ppBodyFatSubCutKg")?.standardArray?.[1]} statusText={getD("ppBodyFatSubCutKg")?.standardTitle} statusColor={getD("ppBodyFatSubCutKg")?.standColor} />
+              <MetricWide label="Subcutaneous Fat Ratio" value={m.subcutaneousFatRatio} unit="%" min={getD("ppBodyFatSubCutPercentage")?.standardArray?.[0]} max={getD("ppBodyFatSubCutPercentage")?.standardArray?.[1]} statusText={getD("ppBodyFatSubCutPercentage")?.standardTitle} statusColor={getD("ppBodyFatSubCutPercentage")?.standColor} />
+              <MetricWide label="Trunk Fat Mass" value={m.trunkFatMass} unit="kg" statusText={getD("ppBodyFatKgTrunk")?.standardTitle} />
+              <MetricWide label="Trunk Fat Percentage" value={m.trunkFatPercentage} unit="%" statusText={getD("ppBodyFatRateTrunk")?.standardTitle} />
+              <MetricWide label="Visceral Fat" value={m.visceralFat} unit="lvl" min={getD("ppVisceralFat")?.standardArray?.[0]} max={getD("ppVisceralFat")?.standardArray?.[1]} statusText={getD("ppVisceralFat")?.standardTitle} statusColor={getD("ppVisceralFat")?.standColor} />
+              <MetricWide label="Fat Control" value={m.fatControl} unit="kg" statusText={getD("ppFatControlKg")?.standardTitle} />
             </MetricGroup>
 
-            <MetricGroup title="Water, Protein & Mineral" icon={<Droplet className="h-5 w-5" />} accent="info" isGrid gridCols={4}>
-              <MetricSquare label="Body Water" value={m.totalBodyWater} unit="kg" statusText={getD("ppWaterKg")?.standardTitle} statusColor={getD("ppWaterKg")?.standColor} />
-              <MetricSquare label="Water Ratio" value={m.waterRatio} unit="%" statusText={getD("ppWaterPercentage")?.standardTitle} statusColor={getD("ppWaterPercentage")?.standColor} />
-              <MetricSquare label="Intra Water" value={m.intracellularWater} unit="kg" statusText={getD("ppWaterICWKg")?.standardTitle} statusColor={getD("ppWaterICWKg")?.standColor} />
-              <MetricSquare label="Extra Water" value={m.extracellularWater} unit="kg" statusText={getD("ppWaterECWKg")?.standardTitle} statusColor={getD("ppWaterECWKg")?.standColor} />
-              <MetricSquare label="Protein Mass" value={m.proteinMass} unit="kg" statusText={getD("ppProteinKg")?.standardTitle} statusColor={getD("ppProteinKg")?.standColor} />
-              <MetricSquare label="Protein Ratio" value={m.proteinRatio} unit="%" statusText={getD("ppProteinPercentage")?.standardTitle} statusColor={getD("ppProteinPercentage")?.standColor} />
-              <MetricSquare label="Minerals" value={m.minerals} unit="kg" statusText={getD("ppMineralKg")?.standardTitle} statusColor={getD("ppMineralKg")?.standColor} />
-              <MetricSquare label="Bone Mass" value={m.boneMass} unit="kg" statusText={getD("ppBoneKg")?.standardTitle} statusColor={getD("ppBoneKg")?.standColor} />
-              <MetricSquare label="Body Cell Mass" value={m.bodyCellMass} unit="kg" statusText={getD("ppCellMassKg")?.standardTitle} statusColor={getD("ppCellMassKg")?.standColor} />
-              <MetricSquare label="FFM" value={m.fatFreeMass} unit="kg" statusText={getD("ppLoseFatWeightKg")?.standardTitle} statusColor={getD("ppLoseFatWeightKg")?.standColor} />
+            <MetricGroup title="Water & Minerals" icon={<Droplet className="h-5 w-5" />} accent="info" isGrid gridCols={2} className="xl:col-span-1">
+              <MetricWide label="Body Water" value={m.totalBodyWater} unit="kg" min={getD("ppWaterKg")?.standardArray?.[0]} max={getD("ppWaterKg")?.standardArray?.[1]} statusText={getD("ppWaterKg")?.standardTitle} statusColor={getD("ppWaterKg")?.standColor} />
+              <MetricWide label="Water Ratio" value={m.waterRatio} unit="%" min={getD("ppWaterPercentage")?.standardArray?.[0]} max={getD("ppWaterPercentage")?.standardArray?.[1]} statusText={getD("ppWaterPercentage")?.standardTitle} statusColor={getD("ppWaterPercentage")?.standColor} />
+              <MetricWide label="Intra Water" value={m.intracellularWater} unit="kg" min={getD("ppWaterICWKg")?.standardArray?.[0]} max={getD("ppWaterICWKg")?.standardArray?.[1]} statusText={getD("ppWaterICWKg")?.standardTitle} statusColor={getD("ppWaterICWKg")?.standColor} />
+              <MetricWide label="Extra Water" value={m.extracellularWater} unit="kg" min={getD("ppWaterECWKg")?.standardArray?.[0]} max={getD("ppWaterECWKg")?.standardArray?.[1]} statusText={getD("ppWaterECWKg")?.standardTitle} statusColor={getD("ppWaterECWKg")?.standColor} />
+              <MetricWide label="Protein Mass" value={m.proteinMass} unit="kg" min={getD("ppProteinKg")?.standardArray?.[0]} max={getD("ppProteinKg")?.standardArray?.[1]} statusText={getD("ppProteinKg")?.standardTitle} statusColor={getD("ppProteinKg")?.standColor} />
+              <MetricWide label="Protein Ratio" value={m.proteinRatio} unit="%" min={getD("ppProteinPercentage")?.standardArray?.[0]} max={getD("ppProteinPercentage")?.standardArray?.[1]} statusText={getD("ppProteinPercentage")?.standardTitle} statusColor={getD("ppProteinPercentage")?.standColor} />
+              <MetricWide label="Minerals" value={m.minerals} unit="kg" min={getD("ppMineralKg")?.standardArray?.[0]} max={getD("ppMineralKg")?.standardArray?.[1]} statusText={getD("ppMineralKg")?.standardTitle} statusColor={getD("ppMineralKg")?.standColor} />
+              <MetricWide label="Bone Mass" value={m.boneMass} unit="kg" min={getD("ppBoneKg")?.standardArray?.[0]} max={getD("ppBoneKg")?.standardArray?.[1]} statusText={getD("ppBoneKg")?.standardTitle} statusColor={getD("ppBoneKg")?.standColor} />
+              <MetricWide label="Body Cell Mass" value={m.bodyCellMass} unit="kg" min={getD("ppCellMassKg")?.standardArray?.[0]} max={getD("ppCellMassKg")?.standardArray?.[1]} statusText={getD("ppCellMassKg")?.standardTitle} statusColor={getD("ppCellMassKg")?.standColor} />
+              <MetricWide label="FFM" value={m.fatFreeMass} unit="kg" min={getD("ppLoseFatWeightKg")?.standardArray?.[0]} max={getD("ppLoseFatWeightKg")?.standardArray?.[1]} statusText={getD("ppLoseFatWeightKg")?.standardTitle} statusColor={getD("ppLoseFatWeightKg")?.standColor} />
             </MetricGroup>
-
-            <div className="card-elevated p-5 md:col-span-2 lg:col-span-3">
+            <div className="card-elevated p-5 xl:col-span-3">
               <h3 className="font-bold mb-5">vs Standard Range</h3>
               <div className="space-y-5">
                 {[
@@ -648,6 +650,50 @@ export default function PatientDetail() {
               />
             </div>
           )}
+        </TabsContent>
+
+        {/* Impedance */}
+        <TabsContent value="impedance" className="mt-6 space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <MetricGroup title="Bioimpedance @ 20 KHz" icon={<Settings2 className="h-5 w-5" />} accent="accent" isGrid gridCols={3}>
+              <MetricSquare label="Left Arm" value={m.impedance.f20.leftArm} unit="Ω" />
+              <MetricSquare label="Right Arm" value={m.impedance.f20.rightArm} unit="Ω" />
+              <MetricSquare label="Trunk" value={m.impedance.f20.trunk} unit="Ω" />
+              <MetricSquare label="Left Leg" value={m.impedance.f20.leftLeg} unit="Ω" />
+              <MetricSquare label="Right Leg" value={m.impedance.f20.rightLeg} unit="Ω" />
+            </MetricGroup>
+            <MetricGroup title="Bioimpedance @ 100 KHz" icon={<Settings2 className="h-5 w-5" />} accent="accent" isGrid gridCols={3}>
+              <MetricSquare label="Left Arm" value={m.impedance.f100.leftArm} unit="Ω" />
+              <MetricSquare label="Right Arm" value={m.impedance.f100.rightArm} unit="Ω" />
+              <MetricSquare label="Trunk" value={m.impedance.f100.trunk} unit="Ω" />
+              <MetricSquare label="Left Leg" value={m.impedance.f100.leftLeg} unit="Ω" />
+              <MetricSquare label="Right Leg" value={m.impedance.f100.rightLeg} unit="Ω" />
+            </MetricGroup>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div className="lg:col-span-2 card-elevated p-4 bg-muted/5 border-dashed border-border/60">
+              <h4 className="text-sm font-bold flex items-center gap-2 mb-3 text-primary">
+                <Activity className="h-4 w-4" />
+                Clinical Interpretation of Multi-frequency BIA
+              </h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-muted-foreground leading-relaxed">
+                <div>
+                  <p className="font-bold text-foreground mb-1 underline decoration-primary/30 underline-offset-2">20 KHz (Extracellular)</p>
+                  <p>Measurements at 20 KHz primarily reflect resistance in the extracellular water. It is a critical marker for assessing edema, fluid retention, and systemic inflammation.</p>
+                </div>
+                <div>
+                  <p className="font-bold text-foreground mb-1 underline decoration-primary/30 underline-offset-2">100 KHz (Total Body Water)</p>
+                  <p>High-frequency current at 100 KHz penetrates cell membranes, allowing for accurate measurement of both intra and extracellular water for total body composition analysis.</p>
+                </div>
+              </div>
+            </div>
+            <div className="card-elevated p-4 flex flex-col justify-center items-center text-center bg-primary/5 border-primary/20">
+              <Zap className="h-8 w-8 text-primary mb-2 opacity-40" />
+              <h5 className="text-[11px] font-bold uppercase tracking-widest text-primary mb-1">Status</h5>
+              <p className="text-xs font-medium text-foreground">Data mapped from clinical SDK v1.7.2</p>
+            </div>
+          </div>
         </TabsContent>
 
         {/* Trends */}

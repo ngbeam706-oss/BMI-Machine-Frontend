@@ -25,6 +25,7 @@ export interface BackendPatientRecord {
   z100khz_trunk_encode?: number;
   heart_rate?: number | null;
   username: string | null;
+  dob: string | null;
 }
 
 export interface ApiResponse<T> {

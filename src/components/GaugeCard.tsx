@@ -42,11 +42,18 @@ export function GaugeCard({ label, value, max = 100, min = 0, unit = "", status,
           />
         </svg>
         <div className="absolute inset-x-0 bottom-0 flex flex-col items-center">
-          <span className="text-3xl font-bold tabular-nums" style={{ color }}>{value}</span>
-          {unit && <span className="text-[10px] text-muted-foreground -mt-1">{unit}</span>}
+          <div className="flex items-baseline gap-1">
+            <span className="text-3xl font-black tabular-nums" style={{ color }}>{value}</span>
+            {unit && <span className="text-[10px] text-muted-foreground font-bold">{unit}</span>}
+          </div>
+          {(min !== 0 || max !== 100) && (
+            <span className="text-[10px] text-muted-foreground/60 font-medium -mt-1">
+              Std: {min}-{max}
+            </span>
+          )}
         </div>
       </div>
-      {status && <span className="mt-2 text-xs font-semibold" style={{ color }}>{status}</span>}
+      {status && <span className="mt-1 text-[11px] font-bold uppercase tracking-tight" style={{ color }}>{status}</span>}
     </div>
   );
 }

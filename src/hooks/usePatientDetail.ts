@@ -37,6 +37,8 @@ export const usePatientDetail = (id: string | undefined) => {
       return {
         p: {
           id: record.patient_full_body_impedance_id,
+          uhid: record.patient_uhid || "N/A",
+          dob: record.dob || "N/A",
           name: record.username || (record.patient_uhid ? `Patient ${record.patient_uhid}` : "Unknown Patient"),
           gender: mapGender(record.gender),
           age: record.age || 0,
@@ -115,18 +117,18 @@ export const usePatientDetail = (id: string | undefined) => {
             dynamicStandards: lefuMap,
             impedance: {
               f20: { 
-                leftArm: record.z20khz_left_arm_encode || 0, 
-                rightArm: record.z20khz_right_arm_encode || 0, 
-                leftLeg: record.z20khz_left_leg_encode || 0, 
-                rightLeg: record.z20khz_right_leg_encode || 0, 
-                trunk: record.z20khz_trunk_encode || 0 
+                leftArm: getV("ppZ20KhzLeftArmDeCode"), 
+                rightArm: getV("ppZ20KhzRightArmDeCode"), 
+                leftLeg: getV("ppZ20KhzLeftLegDeCode"), 
+                rightLeg: getV("ppZ20KhzRightLegDeCode"), 
+                trunk: getV("ppZ20KhzTrunkDeCode") 
               },
               f100: { 
-                leftArm: record.z100khz_left_arm_encode || 0, 
-                rightArm: record.z100khz_right_arm_encode || 0, 
-                leftLeg: record.z100khz_left_leg_encode || 0, 
-                rightLeg: record.z100khz_right_leg_encode || 0, 
-                trunk: record.z100khz_trunk_encode || 0 
+                leftArm: getV("ppZ100KhzLeftArmDeCode"), 
+                rightArm: getV("ppZ100KhzRightArmDeCode"), 
+                leftLeg: getV("ppZ100KhzLeftLegDeCode"), 
+                rightLeg: getV("ppZ100KhzRightLegDeCode"), 
+                trunk: getV("ppZ100KhzTrunkDeCode") 
               },
             }
           }
