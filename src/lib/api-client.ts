@@ -1,4 +1,4 @@
-const BASE_URL = "https://aviation-rolling-why-expired.trycloudflare.com";
+const BASE_URL = "https://suppliers-tours-collectibles-recorders.trycloudflare.com";
 const API_KEY = "3469454584544589548954^%@&&^#@^#**^@^%#$%@#$@##";
 
 export async function apiFetch<T>(endpoint: string, options: RequestInit = {}): Promise<T> {

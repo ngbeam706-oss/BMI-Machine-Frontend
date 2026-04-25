@@ -122,7 +122,7 @@ export default function PatientDetail() {
 
     try {
       const pdfBlob = await generatePDFBlob(element);
-      const filename = `Mayurah_Report_${patient.name.replace(/\s+/g, '_')}.pdf`;
+      const filename = `BMI Report of ${patient.name} ${patient.id.substring(0, 5)}.pdf`;
       const file = new File([pdfBlob], filename, { type: 'application/pdf' });
 
       if (navigator.canShare && navigator.canShare({ files: [file] })) {
@@ -239,7 +239,7 @@ export default function PatientDetail() {
     setIsDownloading(true);
     try {
       const pdfBlob = await generatePDFBlob(element);
-      const filename = `Report_${patient.id}_${format(new Date(), "yyyyMMdd")}.pdf`;
+      const filename = `BMI Report of ${patient.name} ${patient.id.substring(0, 5)}.pdf`;
       const url = URL.createObjectURL(pdfBlob);
       const link = document.createElement('a');
       link.href = url;

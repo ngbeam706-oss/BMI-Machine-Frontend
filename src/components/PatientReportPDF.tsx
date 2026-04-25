@@ -142,7 +142,7 @@ export const PatientReportPDF = React.forwardRef<HTMLDivElement, PatientReportPD
           </div>
           <div className="border-l border-gray-100 pl-2">
             <div className="text-[8px] font-bold text-center text-slate-500 uppercase">Age</div>
-            <div className="text-[11px] font-bold text-slate-800">{patient.age}Age</div>
+            <div className="text-[11px] font-bold text-slate-800">{patient.age}</div>
           </div>
           <div className="border-l border-gray-100 pl-2">
             <div className="text-[8px] font-bold text-center text-slate-500 uppercase">Height</div>
@@ -166,11 +166,11 @@ export const PatientReportPDF = React.forwardRef<HTMLDivElement, PatientReportPD
             <div className="flex items-start gap-2">
               <div className="flex-1 flex flex-col gap-1">
                 {[
-                  { l: "Total Body Water(kg)", v: m.totalBodyWater, c: "bg-cyan-400", r: `Standard(${m.dynamicStandards?.ppWaterKg?.standardArray?.[0] || "34.5"}~${m.dynamicStandards?.ppWaterKg?.standardArray?.[1] || "42.1"})` },
-                  { l: "Water Ratio(%)", v: m.waterRatio, c: "bg-cyan-400", r: `Standard(${m.dynamicStandards?.ppWaterPercentage?.standardArray?.[0] || "49.3"}~${m.dynamicStandards?.ppWaterPercentage?.standardArray?.[1] || "60.2"})` },
-                  { l: "Fat Mass(kg)", v: m.fatMass, c: "bg-yellow-400", r: `Overweight(${m.dynamicStandards?.ppBodyfatKg?.standardArray?.[0] || "7.4"}~${m.dynamicStandards?.ppBodyfatKg?.standardArray?.[1] || "14.8"})` },
-                  { l: "Protein Mass(kg)", v: m.proteinMass, c: "bg-red-400", r: `Standard(${m.dynamicStandards?.ppProteinKg?.standardArray?.[0] || "9.2"}~${m.dynamicStandards?.ppProteinKg?.standardArray?.[1] || "11.2"})` },
-                  { l: "Minerals(kg)", v: m.minerals, c: "bg-cyan-400", r: `Standard(${m.dynamicStandards?.ppMineralKg?.standardArray?.[0] || "3.1"}~${m.dynamicStandards?.ppMineralKg?.standardArray?.[1] || "3.8"})` },
+                  { l: "Total Body Water(kg)", v: m.totalBodyWater, c: "bg-cyan-400", r: `Standard(${m.dynamicStandards?.ppWaterKg?.standardArray?.[0] || "--"}~${m.dynamicStandards?.ppWaterKg?.standardArray?.[1] || "--"})` },
+                  { l: "Water Ratio(%)", v: m.waterRatio, c: "bg-cyan-400", r: `Standard(${m.dynamicStandards?.ppWaterPercentage?.standardArray?.[0] || "--"}~${m.dynamicStandards?.ppWaterPercentage?.standardArray?.[1] || "--"})` },
+                  { l: "Fat Mass(kg)", v: m.fatMass, c: "bg-yellow-400", r: `${m.dynamicStandards?.ppBodyfatKg?.standardTitle || "Standard"}(${m.dynamicStandards?.ppBodyfatKg?.standardArray?.[0] || "--"}~${m.dynamicStandards?.ppBodyfatKg?.standardArray?.[1] || "--"})` },
+                  { l: "Protein Mass(kg)", v: m.proteinMass, c: "bg-red-400", r: `Standard(${m.dynamicStandards?.ppProteinKg?.standardArray?.[0] || "--"}~${m.dynamicStandards?.ppProteinKg?.standardArray?.[1] || "--"})` },
+                  { l: "Minerals(kg)", v: m.minerals, c: "bg-cyan-400", r: `Standard(${m.dynamicStandards?.ppMineralKg?.standardArray?.[0] || "--"}~${m.dynamicStandards?.ppMineralKg?.standardArray?.[1] || "--"})` },
                 ].map((item) => (
                   <div key={item.l} className="bg-white px-2 py-1 rounded shadow-sm border border-gray-100 flex items-center justify-between text-[6px]">
                     <div className="flex items-center gap-1 w-[45%]">
@@ -212,8 +212,12 @@ export const PatientReportPDF = React.forwardRef<HTMLDivElement, PatientReportPD
                 <div className="absolute flex flex-col items-center justify-center text-center">
                   <span className="text-[7px] text-slate-500 font-bold uppercase">Weight</span>
                   <span className="text-[12px] font-bold text-slate-800 leading-none">{m.weight}kg</span>
-                  <span className="text-[7px] text-slate-500 font-bold mt-0.5">(52~71)</span>
-                  <span className="text-[7px] text-slate-500 font-bold uppercase">Overweight</span>
+                  <span className="text-[7px] text-slate-500 font-bold mt-0.5">
+                    ({m.dynamicStandards?.ppWeightKg?.standardArray?.[0] || "52"}~{m.dynamicStandards?.ppWeightKg?.standardArray?.[1] || "71"})
+                  </span>
+                  <span className="text-[7px] text-slate-500 font-bold uppercase">
+                    {m.dynamicStandards?.ppWeightKg?.standardTitle || "Standard"}
+                  </span>
                 </div>
               </div>
             </div>
@@ -506,7 +510,9 @@ export const PatientReportPDF = React.forwardRef<HTMLDivElement, PatientReportPD
                     </div>
                     <span className="font-bold text-[9px] text-slate-800">{m.extracellularWater}kg</span>
                     <span className="text-slate-500 font-bold text-[7px] w-[65px] text-right">
-                      Standard(13.1~16.0)
+                      Standard(
+                      {m.dynamicStandards?.ppWaterECWKg?.standardArray?.[0] || "--"}~
+                      {m.dynamicStandards?.ppWaterECWKg?.standardArray?.[1] || "--"})
                     </span>
                   </div>
 
@@ -577,7 +583,8 @@ export const PatientReportPDF = React.forwardRef<HTMLDivElement, PatientReportPD
                       {m.totalBodyWater}kg
                     </span>
                     <span className="text-[7px] text-slate-500 font-bold mt-0.5">
-                      (35~42)
+                      ({m.dynamicStandards?.ppWaterKg?.standardArray?.[0] || "--"}~
+                      {m.dynamicStandards?.ppWaterKg?.standardArray?.[1] || "--"})
                     </span>
                   </div>
                 </div>
@@ -657,68 +664,87 @@ export const PatientReportPDF = React.forwardRef<HTMLDivElement, PatientReportPD
             </div> */}
 
             <SectionHeader title="Body type analysis" />
-            <div className=" p-0.5 rounded flex flex-col gap-0.5">
-              <div className="text-[8px] font-bold text-slate-800 ml-2">Fat Ratio</div>
-
-              <div className="grid grid-cols-4 gap-1">
-                {/* Row 1 */}
-                <div className="bg-white rounded-md h-6 flex items-center justify-center text-[8px] font-bold text-slate-700 shadow-sm">Overweight</div>
-                {[
-                  { name: "Edematous obese", key: "Edematous obese" },
-                  { name: "Overweight muscular", key: "Overweight muscular" },
-                  { name: "Muscular overweight", key: "Muscular overweight" }
-                ].map(item => (
-                  <div key={item.name} className={cn(
-                    "rounded-md h-6 flex items-center justify-center text-center text-[6px] leading-tight shadow-sm transition-colors",
-                    (m.bodyType === item.key || m.dynamicStandards?.ppBodyType?.currentValue === item.key) ? "bg-[#cccccc] font-bold text-slate-800" : "bg-white text-slate-500"
-                  )}>
-                    {item.name}
-                  </div>
-                ))}
-
-                {/* Row 2 */}
-                <div className="bg-white rounded-md h-6 flex items-center justify-center text-[8px] font-bold text-slate-700 shadow-sm">Standard</div>
-                {[
-                  { name: "Lack of exercise", key: "Lack of exercise" },
-                  { name: "Standard", key: "Standard" },
-                  { name: "Standard muscular", key: "Standard muscular" }
-                ].map(item => (
-                  <div key={item.name} className={cn(
-                    "rounded-md h-6 flex items-center justify-center text-center text-[6px] leading-tight shadow-sm transition-colors",
-                    (m.bodyType === item.key || m.dynamicStandards?.ppBodyType?.currentValue === item.key) ? "bg-[#cccccc] font-bold text-slate-800" : "bg-white text-slate-500"
-                  )}>
-                    {item.name}
-                  </div>
-                ))}
-
-                {/* Row 3 */}
-                <div className="bg-white rounded-md h-6 flex items-center justify-center text-[8px] font-bold text-slate-700 shadow-sm">Underweight</div>
-                {[
-                  { name: "Lean", key: "Lean" },
-                  { name: "Lean muscular", key: "Lean muscular" },
-                  { name: "Muscular", key: "Muscular" }
-                ].map(item => (
-                  <div key={item.name} className={cn(
-                    "rounded-md h-6 flex items-center justify-center text-center text-[6px] leading-tight shadow-sm transition-colors",
-                    (m.bodyType === item.key || m.dynamicStandards?.ppBodyType?.currentValue === item.key) ? "bg-[#cccccc] font-bold text-slate-800" : "bg-white text-slate-500"
-                  )}>
-                    {item.name}
-                  </div>
-                ))}
-
-                {/* Row 4 (Muscle labels) */}
-                <div className="h-6"></div>
-                <div className="bg-white rounded-md h-6 flex items-center justify-center text-[8px] font-bold text-slate-600 shadow-sm">Insufficient</div>
-                <div className="bg-white rounded-md h-6 flex items-center justify-center text-[8px] font-bold text-slate-600 shadow-sm">standard</div>
-                <div className="bg-white rounded-md h-6 flex items-center justify-center text-[8px] font-bold text-slate-600 shadow-sm">excellent</div>
+            <div className="p-1 rounded-lg flex flex-col gap-2">
+              {/* Fat Ratio Status Row */}
+              <div className="flex items-center gap-1">
+                <div className="text-[7px] font-bold text-slate-800 uppercase px-1 w-14 shrink-0">Fat Ratio</div>
+                <div className="flex gap-1 flex-1">
+                  {["Insufficient", "Standard", "Overweight", "Obesity"].map((opt) => {
+                    const stdTitle = (m.dynamicStandards?.ppFat?.standardTitle || "").trim().toLowerCase();
+                    const isActive = stdTitle === opt.toLowerCase() || (opt === "Overweight" && stdTitle === "high");
+                    return (
+                      <div key={opt} className={cn(
+                        "flex-1 py-1 rounded border text-[5.5px] font-bold text-center transition-all",
+                        isActive
+                          ? "bg-teal-50 border-teal-200  shadow-sm"
+                          : "bg-white border-gray-50  text-slate-900"
+                      )}>
+                        {opt} {isActive && "✅"}
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
 
-              <div className="text-[8px] font-bold text-slate-800 text-center mt-0.5">Muscle Mass</div>
+              {/* Muscle Mass Status Row */}
+              <div className="flex items-center gap-1">
+                <div className="text-[7px] font-bold text-slate-800 uppercase px-1 w-14 shrink-0">Muscle Mass</div>
+                <div className="flex gap-1 flex-1">
+                  {["Insufficient", "Standard", "Excellent"].map((opt) => {
+                    const stdTitle = (m.dynamicStandards?.ppMuscleKg?.standardTitle || "").trim().toLowerCase();
+                    const isActive = stdTitle === opt.toLowerCase();
+                    return (
+                      <div key={opt} className={cn(
+                        "flex-1 py-1 rounded border text-[5.5px] font-bold text-center transition-all",
+                        isActive
+                          ? "bg-teal-50 border-teal-200 text-dark shadow-sm"
+                          : "bg-white border-gray-50 text-dark "
+                      )}>
+                        {opt} {isActive && "✅"}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
 
-              <div className="text-[6.5px] text-slate-600 font-bold mt-0.5 px-1">
-                Fat Ratio:{m.dynamicStandards?.ppFat?.standardTitle || "Standard"};
-                Muscle Mass:{m.dynamicStandards?.ppMuscleKg?.standardTitle || "Standard"};
-                Body Type:{m.bodyType || m.dynamicStandards?.ppBodyType?.currentValue || "Standard"}
+              {/* Body Type Status Grid */}
+              <div className="flex flex-col gap-1">
+                <div className="text-[7px] font-bold text-slate-800 uppercase px-1">Body Type</div>
+                <div className="grid grid-cols-3 gap-1">
+                  {[
+                    "Edematous obese", "Overweight muscular", "Muscular overweight",
+                    "Lack of exercise", "Standard", "Standard muscular",
+                    "Lean", "Lean muscular", "Muscular"
+                  ].map((opt) => {
+                    const currentBodyType = (m.bodyType || m.dynamicStandards?.ppBodyType?.currentValue || "").trim().toLowerCase();
+                    const isActive = currentBodyType === opt.toLowerCase();
+                    return (
+                      <div key={opt} className={cn(
+                        "py-1 rounded border text-[5.5px] font-bold text-center leading-tight transition-all",
+                        isActive
+                          ? "bg-teal-50 border-teal-200 text-dark shadow-sm"
+                          : "bg-white border-gray-50 text-dark"
+                      )}>
+                        {opt} {isActive && "✅"}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className=" border-t border-dashed border-gray-100 pt-1">
+                {/* <div className="text-[7px] font-bold text-slate-800 uppercase px-1 mb-1">Result Summary:</div> */}
+                <div className="grid grid-cols-3 gap-1 px-1">
+                  <div className="text-[6px] text-slate-600 font-bold">
+                    Fat Ratio: <span className="text-teal-600 uppercase">{m.dynamicStandards?.ppFat?.standardTitle || "Standard"}</span>
+                  </div>
+                  <div className="text-[6px] text-slate-600 font-bold">
+                    Muscle Mass: <span className="text-teal-600 uppercase">{m.dynamicStandards?.ppMuscleKg?.standardTitle || "Standard"}</span>
+                  </div>
+                  <div className="text-[6px] text-slate-600 font-bold">
+                    Body Type: <span className="text-teal-600 uppercase">{m.bodyType || m.dynamicStandards?.ppBodyType?.currentValue || "Standard"}</span>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -755,7 +781,7 @@ export const PatientReportPDF = React.forwardRef<HTMLDivElement, PatientReportPD
                     <br />
                     Fat Ratio {m.leftArmFatRatio}%
                   </div>
-                   {/* Right Arm */}
+                  {/* Right Arm */}
                   <div className="absolute top-[18%] right-4 text-[7px] text-slate-600 font-bold leading-tight text-right">
                     <div className="font-bold text-slate-800 uppercase mb-0.5">Right arm</div>
                     Fat Mass {m.rightArmFatMass}kg
