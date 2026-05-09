@@ -27,20 +27,15 @@ export default function Patients() {
 
   const [endDate, setEndDate] = useState(() => format(new Date(), "yyyy-MM-dd"));
   const [startDate, setStartDate] = useState(() => format(subDays(new Date(), 7), "yyyy-MM-dd"));
-  const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 10;
 
   const { data: response, isLoading: isDynamicLoading } = usePatients({
     start_date: startDate,
     end_date: endDate,
     patient_uhid: search.length > 3 ? search : undefined, // Only search backend if search > 3 chars
-    limit: pageSize,
-    offset: (currentPage - 1) * pageSize
   });
 
   const dynamicPatients = response?.data || [];
-  const totalItems = response?.count || 0;
-  const totalPages = Math.ceil(totalItems / pageSize);
 
   const branches = useMemo(() => {
     if (!dynamicPatients) return [];
@@ -111,6 +106,14 @@ export default function Patients() {
     });
     return list;
   }, [dynamicPatients, search, branchFilter, deviceFilter, genderFilter, statusFilter, ageFilter, sort]);
+
+  const {
+    currentPage,
+    setCurrentPage,
+    totalPages,
+    paginatedItems,
+    totalItems,
+  } = usePagination(filtered, pageSize);
 
   return (
     <>
@@ -234,7 +237,7 @@ export default function Patients() {
                 </tr>
               </thead>
               <tbody>
-                {filtered.map(({ p, scan }) => (
+                {paginatedItems.map(({ p, scan }) => (
                   <tr key={p.id} className="border-t border-border hover:bg-muted/30 transition-colors">
                     <td className="py-3 px-5">
                       <Link to={`/patients/${p.id}`} className="flex items-center gap-3 group">
@@ -277,7 +280,7 @@ export default function Patients() {
       ) : (
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-            {filtered.map(({ p, scan }) => (
+            {paginatedItems.map(({ p, scan }) => (
               <Link key={p.id} to={`/patients/${p.id}`} className="card-elevated p-5 hover:shadow-elevated hover:-translate-y-0.5 transition-all">
                 <div className="flex items-start gap-3 mb-4">
                   <div className="h-12 w-12 rounded-full bg-gradient-accent text-accent-foreground flex items-center justify-center font-bold">{p.name.split(" ").map((n) => n[0]).join("")}</div>
