@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, Download, Printer, Share2, Building2, Cpu, Calendar, Phone, Mail, Activity, Dumbbell, Droplet, Flame, Zap, Settings2, AlertCircle, TrendingUp, TrendingDown, Loader2 } from "lucide-react";
 import { PatientReportPDF } from "@/components/PatientReportPDF";
+import { PatientBasicReportPDF } from "@/components/PatientBasicReportPDF";
 import { toCanvas } from "html-to-image";
 import jsPDF from "jspdf";
 import { Button } from "@/components/ui/button";
@@ -22,7 +23,9 @@ import { toast } from "sonner";
 export default function PatientDetail() {
   const { id } = useParams();
   const reportRef = useRef<HTMLDivElement>(null);
+  const basicReportRef = useRef<HTMLDivElement>(null);
   const [isDownloading, setIsDownloading] = useState(false);
+  const [isDownloadingBasic, setIsDownloadingBasic] = useState(false);
 
   const { data, isLoading: isDynamicLoading, error: dynamicError } = usePatientDetail(id);
 
@@ -254,6 +257,52 @@ export default function PatientDetail() {
     }
   };
 
+  const handleDownloadBasicPDF = async () => {
+    const element = basicReportRef.current;
+    if (!element) return;
+
+    setIsDownloadingBasic(true);
+    try {
+      const canvas = await toCanvas(element, {
+        quality: 1,
+        pixelRatio: 2,
+        backgroundColor: '#ffffff',
+        skipFonts: false,
+        width: 800,
+        height: 1132
+      });
+
+      const imgData = canvas.toDataURL('image/jpeg', 1.0);
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4',
+        compress: true
+      });
+
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+
+      pdf.setFillColor(255, 255, 255);
+      pdf.rect(0, 0, pdfWidth, pdfHeight, 'F');
+      pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight, undefined, 'FAST');
+      const pdfBlob = pdf.output('blob');
+
+      const filename = `Basic_BMI_Report_${patient.name}_${patient.id.substring(0, 5)}.pdf`;
+      const url = URL.createObjectURL(pdfBlob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      link.click();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("PDF Generation Error:", err);
+      toast.error("Could not generate Basic PDF");
+    } finally {
+      setIsDownloadingBasic(false);
+    }
+  };
+
   return (
     <>
       <Link to="/patients" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary mb-4 transition-colors">
@@ -290,7 +339,20 @@ export default function PatientDetail() {
               </Button>
               <Button
                 size="sm"
-                className="bg-gradient-primary text-primary-foreground hover:opacity-90 min-w-[140px]"
+                className="bg-gradient-primary text-primary-foreground hover:opacity-90 min-w-[130px]"
+                onClick={handleDownloadBasicPDF}
+                disabled={isDownloadingBasic}
+              >
+                {isDownloadingBasic ? (
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                ) : (
+                  <Download className="h-4 w-4 mr-2" />
+                )}
+                {isDownloadingBasic ? "Generating..." : "Basic Report"}
+              </Button>
+              <Button
+                size="sm"
+                className="bg-card text-foreground border border-border hover:bg-muted min-w-[130px]"
                 onClick={handleDownloadPDF}
                 disabled={isDownloading}
               >
@@ -299,7 +361,7 @@ export default function PatientDetail() {
                 ) : (
                   <Download className="h-4 w-4 mr-2" />
                 )}
-                {isDownloading ? "Generating PDF..." : "Download Report"}
+                {isDownloading ? "Generating..." : "Detailed Report"}
               </Button>
             </div>
           </div>
@@ -307,6 +369,14 @@ export default function PatientDetail() {
           <div className="fixed pointer-events-none opacity-0 left-[-9999px] bg-white">
             <PatientReportPDF
               ref={reportRef}
+              patient={patient}
+              latestScan={latest}
+              scans={scans}
+              branch={branch}
+              device={device}
+            />
+            <PatientBasicReportPDF
+              ref={basicReportRef}
               patient={patient}
               latestScan={latest}
               scans={scans}
